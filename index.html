@@ -1,466 +1,479 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#0d0d0d" />
-  <title>Sapiens · Datos Curiosos</title>
+  <meta name="theme-color" content="#0d0d0d" id="theme-meta" />
+  <title>Biblioteca · Datos Curiosos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ─── TOKENS ─── */
     :root {
-      --bg: #0d0d0d;
-      --surface: #161616;
-      --border: rgba(255,255,255,0.07);
       --accent: #c9a84c;
-      --accent-soft: rgba(201,168,76,0.12);
-      --text-primary: #f0ebe0;
-      --text-secondary: rgba(240,235,224,0.55);
-      --text-dim: rgba(240,235,224,0.3);
-      --radius: 20px;
+      --accent-soft: rgba(201,168,76,0.13);
+      --accent-border: rgba(201,168,76,0.28);
+      --radius: 18px;
+      --font-serif: 'Lora', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
     }
 
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text-primary);
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
+    [data-theme="dark"] {
+      --bg: #111111;
+      --surface: #1a1a1a;
+      --surface2: #222222;
+      --border: rgba(255,255,255,0.08);
+      --text1: #f2ede2;
+      --text2: rgba(242,237,226,0.62);
+      --text3: rgba(242,237,226,0.32);
+      --shadow: 0 4px 24px rgba(0,0,0,0.5);
+      --btn-sub-bg: #1e1e1e;
     }
+
+    [data-theme="light"] {
+      --bg: #f5f0e8;
+      --surface: #ffffff;
+      --surface2: #ede8df;
+      --border: rgba(0,0,0,0.09);
+      --text1: #1a1814;
+      --text2: rgba(26,24,20,0.62);
+      --text3: rgba(26,24,20,0.38);
+      --shadow: 0 4px 24px rgba(0,0,0,0.1);
+      --btn-sub-bg: #eee9e1;
+    }
+
+    /* ─── BASE ─── */
+    html { height: 100%; }
 
     body {
+      min-height: 100dvh;
+      background: var(--bg);
+      color: var(--text1);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
       display: flex;
       flex-direction: column;
-      min-height: 100dvh;
-      padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+      padding-top: env(safe-area-inset-top, 0);
+      padding-bottom: env(safe-area-inset-bottom, 0);
+      transition: background 0.3s, color 0.3s;
       overflow-x: hidden;
     }
 
-    /* ─── Header ─── */
+    /* ─── HEADER ─── */
     header {
-      padding: 20px 24px 0;
+      padding: 16px 20px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-
-    .book-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .book-icon {
-      width: 32px;
-      height: 32px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
       flex-shrink: 0;
     }
 
-    .book-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.03em;
+    .book-label { display: flex; align-items: center; gap: 10px; }
+
+    .book-icon {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
     }
 
-    .book-author {
-      font-size: 11px;
-      color: var(--text-dim);
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 16px; font-weight: 700;
+      color: var(--accent); letter-spacing: 0.02em;
     }
+
+    .brand-sub {
+      font-size: 11px; color: var(--text3);
+      font-weight: 400; letter-spacing: 0.06em;
+      text-transform: uppercase; margin-top: 1px;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 8px; }
 
     .counter-badge {
-      font-size: 11px;
-      color: var(--text-dim);
-      background: var(--surface);
+      font-size: 12px; color: var(--text3);
+      background: var(--surface2);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 4px 10px;
+      border-radius: 20px; padding: 5px 11px;
       font-variant-numeric: tabular-nums;
+      transition: background 0.3s, border 0.3s, color 0.3s;
     }
 
-    /* ─── Main content ─── */
+    .btn-theme {
+      width: 36px; height: 36px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s, transform 0.12s;
+    }
+    .btn-theme:active { transform: scale(0.9); }
+
+    /* ─── DIVIDER ─── */
+    .accent-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.25; margin: 14px 20px 0;
+      flex-shrink: 0;
+    }
+
+    /* ─── SCROLL AREA ─── */
     main {
       flex: 1;
-      padding: 24px 20px 16px;
+      padding: 16px 16px 8px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      overflow: hidden;
+      gap: 12px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
-    /* ─── Card ─── */
+    /* ─── CARD ─── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
+      box-shadow: var(--shadow);
       overflow: hidden;
-      position: relative;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      transition: opacity 0.28s ease, transform 0.28s ease, background 0.3s, border 0.3s, box-shadow 0.3s;
     }
 
-    .card.animating {
-      opacity: 0;
-      transform: translateY(12px) scale(0.98);
-    }
+    .card.fade-out { opacity: 0; transform: translateY(10px) scale(0.985); }
 
     .card-top {
-      padding: 20px 20px 16px;
+      padding: 18px 18px 14px;
       border-bottom: 1px solid var(--border);
-      position: relative;
+      transition: border 0.3s;
     }
 
     .category-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 10px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.09em;
       color: var(--accent);
       background: var(--accent-soft);
-      border-radius: 20px;
-      padding: 4px 10px;
-      margin-bottom: 12px;
+      border-radius: 20px; padding: 4px 11px; margin-bottom: 12px;
+    }
+
+    .source-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      color: var(--text3);
+      background: var(--surface2);
+      border-radius: 20px; padding: 3px 9px; margin-bottom: 12px; margin-left: 6px;
+      transition: background 0.3s, color 0.3s;
     }
 
     .fact-headline {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      line-height: 1.3;
-      font-weight: 700;
-      color: var(--text-primary);
+      font-family: var(--font-serif);
+      font-size: 21px; line-height: 1.35;
+      font-weight: 700; color: var(--text1);
+      hyphens: auto; -webkit-hyphens: auto;
+      word-break: break-word;
+      transition: color 0.3s;
     }
 
-    .card-body {
-      padding: 16px 20px 20px;
-    }
+    .card-body { padding: 14px 18px 18px; }
 
-    .fact-number {
-      font-size: 10px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-dim);
-      margin-bottom: 10px;
+    .chapter-label {
+      font-size: 11px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text3); margin-bottom: 10px;
+      transition: color 0.3s;
     }
 
     .fact-development {
-      font-size: 15px;
-      line-height: 1.7;
-      color: rgba(240,235,224,0.8);
-      font-weight: 300;
+      font-size: 16px; line-height: 1.75;
+      color: var(--text2); font-weight: 400;
+      word-break: break-word; overflow-wrap: break-word;
+      hyphens: auto; -webkit-hyphens: auto;
+      transition: color 0.3s;
     }
 
-    /* ─── Quote block ─── */
+    /* ─── QUOTE ─── */
     .quote-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 3px solid var(--accent);
       border-radius: var(--radius);
-      padding: 18px 20px;
+      padding: 16px 18px 18px;
+      box-shadow: var(--shadow);
+      word-break: break-word; overflow-wrap: break-word;
+      transition: opacity 0.28s ease, transform 0.28s ease, background 0.3s, border 0.3s, box-shadow 0.3s;
       position: relative;
-      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    .quote-card.animating {
-      opacity: 0;
-      transform: translateY(8px);
-    }
+    .quote-card.fade-out { opacity: 0; transform: translateY(8px); }
 
     .quote-mark {
-      font-family: 'Playfair Display', serif;
-      font-size: 48px;
-      line-height: 1;
-      color: var(--accent);
-      opacity: 0.3;
-      position: absolute;
-      top: 8px;
-      left: 16px;
+      font-family: var(--font-serif);
+      font-size: 52px; line-height: 1;
+      color: var(--accent); opacity: 0.22;
+      position: absolute; top: 6px; left: 14px;
     }
 
     .quote-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      line-height: 1.65;
-      font-style: italic;
-      color: var(--text-secondary);
-      padding-top: 16px;
+      font-family: var(--font-serif);
+      font-size: 15px; line-height: 1.7;
+      font-style: italic; color: var(--text2);
+      padding-top: 18px;
+      hyphens: auto; -webkit-hyphens: auto;
+      word-break: break-word; overflow-wrap: break-word;
+      transition: color 0.3s;
     }
 
     .quote-source {
-      margin-top: 10px;
-      font-size: 11px;
-      color: var(--text-dim);
-      text-align: right;
-      letter-spacing: 0.05em;
+      margin-top: 10px; font-size: 12px;
+      color: var(--text3); text-align: right;
+      letter-spacing: 0.04em; transition: color 0.3s;
     }
 
-    /* ─── Stats row ─── */
+    /* ─── STATS ─── */
     .stats-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      transition: opacity 0.28s ease, transform 0.28s ease;
     }
 
-    .stats-row.animating {
-      opacity: 0;
-      transform: translateY(8px);
-    }
+    .stats-row.fade-out { opacity: 0; transform: translateY(8px); }
 
     .stat-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 14px 12px;
+      border-radius: 14px; padding: 14px;
+      box-shadow: var(--shadow);
+      word-break: break-word; overflow-wrap: break-word;
+      transition: background 0.3s, border 0.3s, box-shadow 0.3s;
     }
 
     .stat-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1.1;
+      font-family: var(--font-serif);
+      font-size: 24px; font-weight: 700;
+      color: var(--accent); line-height: 1.15;
+      word-break: break-all;
     }
 
     .stat-label {
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-top: 4px;
-      line-height: 1.4;
-      font-weight: 400;
+      font-size: 12px; color: var(--text3);
+      margin-top: 4px; line-height: 1.45;
+      font-weight: 400; transition: color 0.3s;
     }
 
-    /* ─── Chapter pill ─── */
-    .chapter-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--text-dim);
-      letter-spacing: 0.04em;
-    }
-
-    .chapter-dot {
-      width: 4px;
-      height: 4px;
-      background: var(--accent);
-      border-radius: 50%;
-      opacity: 0.6;
-    }
-
-    /* ─── Bottom toolbar ─── */
-    footer {
-      padding: 12px 20px calc(env(safe-area-inset-bottom, 16px) + 12px);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .btn-main {
-      width: 100%;
-      background: var(--accent);
-      color: #0d0d0d;
-      font-family: 'Inter', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      border: none;
-      border-radius: 14px;
-      padding: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      -webkit-tap-highlight-color: transparent;
-      transition: opacity 0.15s ease, transform 0.12s ease;
-      letter-spacing: 0.01em;
-    }
-
-    .btn-main:active {
-      opacity: 0.85;
-      transform: scale(0.97);
-    }
-
-    .btn-main svg {
-      width: 18px;
-      height: 18px;
-      transition: transform 0.4s ease;
-    }
-
-    .btn-main.spinning svg {
-      animation: spin 0.5s ease;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    .toolbar-sub {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .btn-sub {
+    /* ─── MIX CARD ─── */
+    .mix-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 10px;
-      color: var(--text-secondary);
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.15s ease, transform 0.12s ease;
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: 0 0 0 1px var(--accent-soft), var(--shadow);
+      display: none;
+      word-break: break-word; overflow-wrap: break-word;
+      transition: background 0.3s, border 0.3s, box-shadow 0.3s;
     }
 
-    .btn-sub:active {
-      background: rgba(255,255,255,0.05);
-      transform: scale(0.96);
+    .mix-card.visible { display: block; }
+
+    .mix-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px;
     }
 
-    .btn-sub.active {
-      color: var(--accent);
-      border-color: rgba(201,168,76,0.3);
-      background: var(--accent-soft);
+    .mix-badge {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--bg);
+      background: var(--accent);
+      border-radius: 20px; padding: 3px 10px;
     }
 
-    /* ─── Progress dots ─── */
+    .mix-books {
+      font-size: 11px; color: var(--text3);
+      display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+    }
+
+    .mix-dot { width: 3px; height: 3px; background: var(--accent); border-radius: 50%; }
+
+    .mix-connection {
+      font-family: var(--font-serif);
+      font-size: 16px; line-height: 1.65;
+      color: var(--text1); font-weight: 600;
+      margin-bottom: 10px;
+      hyphens: auto; -webkit-hyphens: auto;
+      transition: color 0.3s;
+    }
+
+    .mix-detail {
+      font-size: 15px; line-height: 1.72;
+      color: var(--text2);
+      hyphens: auto; -webkit-hyphens: auto;
+      word-break: break-word; overflow-wrap: break-word;
+      transition: color 0.3s;
+    }
+
+    /* ─── DOTS ─── */
     .progress-dots {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      padding: 2px 0;
+      display: flex; justify-content: center; gap: 5px; padding: 2px 0;
     }
 
     .dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--border);
-      transition: background 0.3s ease, transform 0.3s ease;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--border); transition: background 0.3s, transform 0.3s;
     }
 
-    .dot.visited {
+    .dot.visited { background: var(--accent); opacity: 0.4; }
+    .dot.current { background: var(--accent); opacity: 1; transform: scale(1.4); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      flex-shrink: 0;
+      padding: 10px 16px calc(env(safe-area-inset-bottom, 12px) + 10px);
+      display: flex; flex-direction: column; gap: 9px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      transition: border 0.3s, background 0.3s;
+    }
+
+    .btn-main {
+      width: 100%; background: var(--accent);
+      color: #0d0d0d; font-family: var(--font-sans);
+      font-size: 16px; font-weight: 600;
+      border: none; border-radius: 13px; padding: 17px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.15s, transform 0.12s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-main:active { opacity: 0.82; transform: scale(0.97); }
+
+    .btn-main svg { width: 17px; height: 17px; transition: transform 0.45s; }
+    .btn-main.spinning svg { animation: spin 0.5s ease; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .toolbar-sub { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+    .btn-sub {
+      background: var(--btn-sub-bg);
+      border: 1px solid var(--border);
+      border-radius: 11px; padding: 11px 6px;
+      color: var(--text2); font-family: var(--font-sans);
+      font-size: 12px; font-weight: 500;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s, transform 0.12s, color 0.3s, border 0.3s;
+    }
+
+    .btn-sub:active { background: var(--surface2); transform: scale(0.95); }
+
+    .btn-sub.active {
+      color: var(--accent);
+      border-color: var(--accent-border);
+      background: var(--accent-soft);
+    }
+
+    .btn-mix {
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+      color: var(--accent);
+    }
+
+    .btn-mix.on {
       background: var(--accent);
-      opacity: 0.5;
+      color: #0d0d0d;
+      border-color: var(--accent);
     }
 
-    .dot.current {
-      background: var(--accent);
-      opacity: 1;
-      transform: scale(1.3);
-    }
-
-    /* ─── Share toast ─── */
+    /* ─── TOAST ─── */
     .toast {
       position: fixed;
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 100px);
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: rgba(30,30,30,0.95);
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 96px);
+      left: 50%; transform: translateX(-50%) translateY(16px);
+      background: var(--surface2);
       border: 1px solid var(--border);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 10px 18px;
-      font-size: 13px;
-      color: var(--text-primary);
-      opacity: 0;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-      white-space: nowrap;
-      z-index: 100;
+      border-radius: 12px; padding: 10px 18px;
+      font-size: 13px; color: var(--text1);
+      opacity: 0; transition: opacity 0.22s, transform 0.22s;
+      pointer-events: none; white-space: nowrap; z-index: 200;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ─── Gradient accent line ─── */
-    .accent-line {
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.3;
-      margin: 0 24px;
-    }
+    /* scrollbar invisible */
+    main::-webkit-scrollbar { display: none; }
+    main { scrollbar-width: none; }
   </style>
 </head>
 <body>
 
 <header>
   <div class="book-label">
-    <div class="book-icon">📖</div>
+    <div class="book-icon">📚</div>
     <div>
-      <div class="book-title">Sapiens</div>
-      <div class="book-author">Yuval Noah Harari</div>
+      <div class="brand-title">Biblioteca</div>
+      <div class="brand-sub">3 libros · datos curiosos</div>
     </div>
   </div>
-  <div class="counter-badge" id="counter">1 / 40</div>
+  <div class="header-right">
+    <div class="counter-badge" id="counter">1 / 75</div>
+    <button class="btn-theme" id="btn-theme" onclick="toggleTheme()" aria-label="Cambiar tema">🌙</button>
+  </div>
 </header>
 
-<div class="accent-line" style="margin-top:16px;"></div>
+<div class="accent-line"></div>
 
 <main id="main-content">
 
   <div class="card" id="main-card">
     <div class="card-top">
-      <div class="category-tag" id="category-tag">
-        <span id="category-icon">🧠</span>
-        <span id="category-text">Revolución Cognitiva</span>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:4px;">
+        <div class="category-tag"><span id="cat-icon">📖</span> <span id="cat-text">Cargando…</span></div>
+        <div class="source-tag" id="source-tag">Sapiens</div>
       </div>
-      <div class="fact-headline" id="fact-headline">
-        Cargando un dato fascinante…
-      </div>
+      <div class="fact-headline" id="fact-headline">Preparando tu dato curioso…</div>
     </div>
     <div class="card-body">
-      <div class="fact-number" id="chapter-source">Capítulo 1</div>
-      <div class="fact-development" id="fact-development">
-        Preparando tu dato curioso del día…
-      </div>
+      <div class="chapter-label" id="chapter-label">—</div>
+      <div class="fact-development" id="fact-development">Un momento…</div>
     </div>
   </div>
 
   <div class="quote-card" id="quote-card">
     <div class="quote-mark">"</div>
-    <div class="quote-text" id="quote-text">
-      Una cita del libro aparecerá aquí.
-    </div>
-    <div class="quote-source" id="quote-source">— Sapiens</div>
+    <div class="quote-text" id="quote-text">Una cita del libro aparecerá aquí.</div>
+    <div class="quote-source" id="quote-source">— Biblioteca</div>
   </div>
 
   <div class="stats-row" id="stats-row">
     <div class="stat-card">
-      <div class="stat-value" id="stat1-value">—</div>
-      <div class="stat-label" id="stat1-label">dato</div>
+      <div class="stat-value" id="stat1v">—</div>
+      <div class="stat-label" id="stat1l">dato</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="stat2-value">—</div>
-      <div class="stat-label" id="stat2-label">dato</div>
+      <div class="stat-value" id="stat2v">—</div>
+      <div class="stat-label" id="stat2l">dato</div>
     </div>
+  </div>
+
+  <div class="mix-card" id="mix-card">
+    <div class="mix-header">
+      <span class="mix-badge">🔀 Conexión</span>
+      <span class="mix-books" id="mix-books">libro A · libro B</span>
+    </div>
+    <div class="mix-connection" id="mix-connection">—</div>
+    <div class="mix-detail" id="mix-detail">—</div>
   </div>
 
   <div class="progress-dots" id="progress-dots"></div>
@@ -478,14 +491,15 @@
     Nuevo dato curioso
   </button>
   <div class="toolbar-sub">
+    <button class="btn-sub btn-mix" id="btn-mix" onclick="toggleMix()">🔀 Mezclar</button>
     <button class="btn-sub" id="btn-fav" onclick="toggleFav()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
       </svg>
       Guardar
     </button>
     <button class="btn-sub" onclick="shareFact()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
         <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
       </svg>
@@ -497,413 +511,465 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* ─── DATA ─── */
 const FACTS = [
+  /* ====== SAPIENS ====== */
   {
-    category: "Revolución Cognitiva",
-    icon: "🧠",
-    headline: "Antes de los sapiens, al menos seis especies humanas poblaban la Tierra",
-    chapter: "Capítulo 1 · Un animal sin importancia",
-    development: "Hace apenas 100.000 años, nuestro planeta era hogar de al menos seis especies del género Homo: neandertales en Europa, Homo erectus en Asia, Homo soloensis en Java... Los sapiens no éramos especiales. Éramos uno más entre varios experimentos evolutivos de la naturaleza.",
-    quote: "Hace unos 70.000 años, organismos pertenecientes a la especie Homo sapiens empezaron a formar estructuras todavía más complejas llamadas culturas. El desarrollo subsiguiente de estas culturas humanas se llama historia.",
-    stat1: { value: "6+", label: "especies humanas conviviendo" },
-    stat2: { value: "2,5M", label: "años de historia del género Homo" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🧠", cat:"Revolución Cognitiva",
+    headline:"Antes de los sapiens, al menos seis especies humanas poblaban la Tierra",
+    chapter:"Cap. 1 · Un animal sin importancia",
+    dev:"Hace apenas 100.000 años, nuestro planeta era hogar de al menos seis especies del género Homo: neandertales en Europa, Homo erectus en Asia, Homo soloensis en Java. Los sapiens no éramos especiales. Éramos uno más entre varios experimentos evolutivos de la naturaleza.",
+    quote:"Hace unos 70.000 años, organismos pertenecientes a la especie Homo sapiens empezaron a formar estructuras todavía más complejas llamadas culturas. El desarrollo subsiguiente de estas culturas humanas se llama historia.",
+    s1:{v:"6+", l:"especies humanas convivían hace 100.000 años"}, s2:{v:"2,5M", l:"años de historia del género Homo"}
   },
   {
-    category: "Revolución Cognitiva",
-    icon: "🧠",
-    headline: "Los neandertales ganaron el primer enfrentamiento con los sapiens",
-    chapter: "Capítulo 2 · El árbol del saber",
-    development: "Hace 100.000 años, un grupo de sapiens intentó colonizar el Levante, territorio neandertal. Perdieron. Tuvieron que retirarse. Los neandertales eran más fuertes y estaban adaptados al frío europeo. Solo 30.000 años después, algo cambió radicalmente en el cerebro de los sapiens y la historia se invirtió para siempre.",
-    quote: "De hecho, en el primer encuentro registrado entre sapiens y neandertales, ganaron los neandertales.",
-    stat1: { value: "100K", label: "años hace que los neandertales nos derrotaron" },
-    stat2: { value: "70K", label: "años hace que los sapiens tomaron el control" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🧠", cat:"Revolución Cognitiva",
+    headline:"Los neandertales ganaron el primer enfrentamiento con los sapiens",
+    chapter:"Cap. 2 · El árbol del saber",
+    dev:"Hace 100.000 años, un grupo de sapiens intentó colonizar el Levante, territorio neandertal. Perdieron y tuvieron que retirarse. Los neandertales eran más fuertes y estaban mejor adaptados al frío. Solo 30.000 años después, algo mutó en el cerebro sapiens y la historia se invirtió para siempre.",
+    quote:"En el primer encuentro registrado entre sapiens y neandertales, ganaron los neandertales.",
+    s1:{v:"100K", l:"años: los neandertales nos derrotaron"}, s2:{v:"70K", l:"años: los sapiens toman el control"}
   },
   {
-    category: "Revolución Cognitiva",
-    icon: "🧠",
-    headline: "La 'Revolución Cognitiva' ocurrió hace 70.000 años y nadie sabe exactamente por qué",
-    chapter: "Capítulo 2 · El árbol del saber",
-    development: "Hace 70.000 años algo mutó en el cerebro de los sapiens. De repente podían hablar de cosas que no existen: dioses, naciones, dinero, derechos humanos. Ningún otro animal puede convencerse a sí mismo de que algo imaginario es real. Esa capacidad única fue el arma secreta que nos llevó a dominar el planeta.",
-    quote: "Los sapiens pueden cooperar en números muy elevados con extraños gracias a su exclusiva capacidad de creer en cosas que existen solo en su propia imaginación, como mitos, dioses, naciones y corporaciones.",
-    stat1: { value: "70K", label: "años desde la revolución cognitiva" },
-    stat2: { value: "∞", label: "ficciones que los sapiens podemos crear" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🧠", cat:"Revolución Cognitiva",
+    headline:"La clave del éxito sapiens: creer en cosas que no existen",
+    chapter:"Cap. 2 · El árbol del saber",
+    dev:"Hace 70.000 años algo cambió en el cerebro sapiens. De repente podían hablar de dioses, naciones, dinero y derechos. Ningún otro animal puede convencerse de que algo imaginario es real. Esa capacidad única fue el arma secreta que nos llevó a dominar el planeta.",
+    quote:"Los sapiens pueden cooperar en números muy elevados con extraños gracias a su exclusiva capacidad de creer en cosas que existen solo en su propia imaginación: mitos, dioses, naciones y corporaciones.",
+    s1:{v:"70K", l:"años desde la revolución cognitiva"}, s2:{v:"∞", l:"ficciones que los sapiens podemos crear"}
   },
   {
-    category: "Cazadores-recolectores",
-    icon: "🏹",
-    headline: "Durante el 95% de la historia humana fuimos cazadores-recolectores",
-    chapter: "Capítulo 3 · Un día en la vida de Adán y Eva",
-    development: "Los 10.000 años de agricultura y los 200 años de industria son un parpadeo comparados con los cientos de miles de años que nuestros antepasados pasaron cazando y recolectando. Nuestro cerebro, nuestros miedos y nuestros deseos fueron esculpidos por esa vida. Por eso en el supermercado cogemos mucho más azúcar del que necesitamos: nuestro cerebro paleolítico aún no se ha actualizado.",
-    quote: "El campo floreciente de la psicología evolutiva argumenta que muchas de nuestras características sociales y psicológicas actuales se modelaron durante esta larga era preagrícola.",
-    stat1: { value: "95%", label: "de nuestra historia como cazadores" },
-    stat2: { value: "200", label: "años de vida industrial (un parpadeo)" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🏹", cat:"Cazadores-recolectores",
+    headline:"Los cazadores-recolectores solo trabajaban 3-5 horas al día",
+    chapter:"Cap. 3 · Un día en la vida de Adán y Eva",
+    dev:"Estudios sobre tribus actuales de cazadores-recolectores revelan que consiguen todo lo necesario para vivir en apenas tres a cinco horas diarias. El resto lo dedican a descansar, socializar y jugar. Los agricultores y trabajadores modernos trabajan mucho más duro. La 'civilización' puede haber sido un mal trato.",
+    quote:"El campo floreciente de la psicología evolutiva argumenta que muchas de nuestras características sociales y psicológicas actuales se modelaron durante esta larga era preagrícola.",
+    s1:{v:"3-5h", l:"trabajo diario en tribus primitivas"}, s2:{v:"8-10h", l:"trabajo diario en el mundo moderno"}
   },
   {
-    category: "Cazadores-recolectores",
-    icon: "🏹",
-    headline: "Los cazadores-recolectores solo trabajaban 3-5 horas al día",
-    chapter: "Capítulo 3 · Un día en la vida de Adán y Eva",
-    development: "Los estudios sobre tribus actuales de cazadores-recolectores como los !Kung del Kalahari revelan que consiguen todo lo que necesitan para vivir en apenas tres a cinco horas diarias. El resto del tiempo lo dedican a descansar, socializar, contar historias y jugar. Los agricultores y trabajadores modernos trabajan mucho más duro. La 'civilización' puede haber sido un mal trato.",
-    quote: "Para comprender nuestra naturaleza, historia y psicología, hemos de penetrar en la cabeza de nuestros antepasados cazadores-recolectores.",
-    stat1: { value: "3-5h", label: "de trabajo diario en tribus primitivas" },
-    stat2: { value: "8-10h", label: "de trabajo diario en el mundo moderno" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🦣", cat:"Extinción masiva",
+    headline:"Los sapiens provocaron la primera gran extinción masiva al llegar a Australia",
+    chapter:"Cap. 4 · El diluvio",
+    dev:"Hace 45.000 años los sapiens llegaron a Australia. En pocos miles de años el 90% de la megafauna desapareció: wombats del tamaño de un hipopótamo, canguros de dos metros, leones marsupiales. Los humanos llegaron y la muerte llegó con ellos. Este patrón se repetiría en todas las islas que colonizamos.",
+    quote:"Con el fin de alcanzar Australia, los humanos tuvieron que cruzar varios brazos de mar, algunos de más de 100 kilómetros de ancho.",
+    s1:{v:"90%", l:"megafauna australiana exterminada"}, s2:{v:"45K", l:"años desde la llegada a Australia"}
   },
   {
-    category: "Extinción masiva",
-    icon: "🦣",
-    headline: "Los sapiens provocaron la primera gran extinción masiva al llegar a Australia",
-    chapter: "Capítulo 4 · El diluvio",
-    development: "Hace 45.000 años los sapiens llegaron a Australia. En solo unos miles de años, el 90% de los megafauna australiana desapareció: wombats del tamaño de un hipopótamo, canguros de dos metros, leones marsupiales... Los humanos llegaron, y la muerte llegó con ellos. Este patrón se repetiría en América, Madagascar y todas las islas que colonizamos.",
-    quote: "Hace unos 45.000 años, los sapiens que vivían en el archipiélago indonesio desarrollaron las primeras sociedades de navegantes.",
-    stat1: { value: "90%", label: "de megafauna australiana exterminada" },
-    stat2: { value: "45K", label: "años desde la llegada a Australia" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🌾", cat:"Revolución Agrícola",
+    headline:"La Revolución Agrícola fue 'el mayor fraude de la historia'",
+    chapter:"Cap. 5 · El mayor fraude de la historia",
+    dev:"Harari lo llama el mayor fraude porque no fueron los humanos quienes domesticaron el trigo, sino el trigo quien nos convirtió en sus esclavos. Antes comíamos cientos de especies; después dependíamos de una sola. Trabajábamos más, la dieta era peor, vivíamos hacinados. El trigo prosperó; las personas, no tanto.",
+    quote:"La transición a la agricultura se inició alrededor de 9500-8500 a.C. en el sudeste de Turquía, el oeste de Irán y el Levante.",
+    s1:{v:"9500", l:"a.C.: inicio de la agricultura"}, s2:{v:"3h→12h", l:"así cambió la jornada laboral"}
   },
   {
-    category: "Revolución Agrícola",
-    icon: "🌾",
-    headline: "La Revolución Agrícola fue 'el mayor fraude de la historia'",
-    chapter: "Capítulo 5 · El mayor fraude de la historia",
-    development: "Harari lo llama el mayor fraude porque el trigo no domesticó a los humanos: fueron los humanos los que se convirtieron en esclavos del trigo. Antes comíamos cientos de especies; después dependíamos de una sola. Trabajábamos más horas, la dieta era peor, vivíamos hacinados y las enfermedades se dispararon. Pero el trigo prosperó: pasó de ser una hierba insignificante a cubrir millones de kilómetros cuadrados.",
-    quote: "La transición a la agricultura se inició alrededor de 9500-8500 a. C. en el país montuoso del sudeste de Turquía, el oeste de Irán y el Levante.",
-    stat1: { value: "9500", label: "años a.C.: inicio de la agricultura" },
-    stat2: { value: "3h→12h", label: "así cambió la jornada laboral diaria" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🌾", cat:"Revolución Agrícola",
+    headline:"El trigo pasó de hierba silvestre a cubrir 225 millones de hectáreas",
+    chapter:"Cap. 5 · El mayor fraude de la historia",
+    dev:"Desde la perspectiva del trigo, la revolución agrícola fue un éxito brillante. Hace 10.000 años era una hierba silvestre de Oriente Próximo. Hoy cubre más superficie que casi cualquier otro organismo. Los humanos dedicamos nuestra vida a protegerlo, regarlo y fertilizarlo. ¿Quién domesticó a quién?",
+    quote:"El trigo no dio a los humanos una vida mejor. Lo que el trigo consiguió fue propagar sus genes por todo el planeta.",
+    s1:{v:"225M ha", l:"de trigo cultivado en el mundo"}, s2:{v:"10K", l:"años desde que el trigo nos 'domesticó'"}
   },
   {
-    category: "Revolución Agrícola",
-    icon: "🌾",
-    headline: "En 10.000 a.C. había 5 millones de humanos; en el siglo I d.C., 250 millones",
-    chapter: "Capítulo 6 · Construyendo pirámides",
-    development: "La agricultura no mejoró la vida de los individuos, pero sí disparó la cantidad de individuos. La paradoja: más comida no significó mejor comida ni más tiempo libre. Significó más gente viviendo vidas más difíciles. La selección natural no favorece la felicidad, favorece la reproducción.",
-    quote: "La agricultura permitió que las poblaciones aumentaran de manera tan radical y rápida que ninguna sociedad agrícola compleja podría jamás volver a sustentarse si retornaba a la caza y la recolección.",
-    stat1: { value: "5M", label: "humanos en 10.000 a.C." },
-    stat2: { value: "250M", label: "humanos en el siglo I d.C." }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🌾", cat:"Revolución Agrícola",
+    headline:"Los agricultores trabajaban más horas y comían peor que los cazadores-recolectores",
+    chapter:"Cap. 5 · El mayor fraude de la historia",
+    dev:"Análisis de esqueletos prehistóricos revelan que los cazadores-recolectores eran más altos y tenían menos enfermedades que los primeros agricultores. La agricultura trajo malnutrición por dieta monótona, enfermedades infecciosas por vivir hacinados con animales y lesiones por trabajo repetitivo.",
+    quote:"Durante 2,5 millones de años, los humanos se alimentaron recolectando plantas y cazando animales sin decidir dónde debería pastar un rebaño.",
+    s1:{v:"−10 cm", l:"altura media perdida al adoptar la agricultura"}, s2:{v:"3×", l:"más horas trabajando como agricultor"}
   },
   {
-    category: "Escritura e Imperio",
-    icon: "📜",
-    headline: "La escritura no se inventó para la poesía: fue para llevar la contabilidad",
-    chapter: "Capítulo 7 · Sobrecarga de memoria",
-    development: "Los primeros textos escritos que conocemos, en tablillas de arcilla sumerias de hace 5.000 años, no son poemas épicos ni filosofía. Son registros de impuestos, inventarios de granos y listas de deudas. La escritura nació de la burocracia, no de la inspiración artística. La literatura llegó mucho después, cuando la tecnología ya estaba asentada.",
-    quote: "La evolución no dotó a los humanos con la capacidad de jugar al fútbol. Es cierto que produjo piernas para chutar, codos para cometer faltas y boca para maldecir.",
-    stat1: { value: "3200", label: "a.C.: primeras tablillas escritas" },
-    stat2: { value: "📊", label: "primer uso: contabilidad fiscal" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🌾", cat:"Demografía",
+    headline:"En 10.000 a.C. había 5 millones de humanos; en el siglo I d.C., 250 millones",
+    chapter:"Cap. 6 · Construyendo pirámides",
+    dev:"La agricultura no mejoró la vida de los individuos, pero sí multiplicó su cantidad. La paradoja: más comida no significó mejor comida ni más tiempo libre. Significó más gente viviendo vidas más difíciles. La selección natural no favorece la felicidad, favorece la reproducción.",
+    quote:"La agricultura permitió que las poblaciones aumentaran de manera tan radical que ninguna sociedad agrícola compleja podría jamás volver a sustentarse si retornaba a la caza y la recolección.",
+    s1:{v:"5M", l:"humanos en 10.000 a.C."}, s2:{v:"250M", l:"humanos en el siglo I d.C."}
   },
   {
-    category: "Órdenes imaginados",
-    icon: "⚖️",
-    headline: "El Código de Hammurabi dividía a las personas en superiores, plebeyos y esclavos",
-    chapter: "Capítulo 8 · No hay justicia en la historia",
-    development: "Hammurabi, rey de Babilonia hace 3.800 años, codificó el primer gran sistema legal. Si un superior mataba a un plebeyo, pagaba una multa. Si un esclavo golpeaba a su amo, le cortaban la oreja. No había hipocresía: la desigualdad estaba oficialmente consagrada. Lo fascinante es que todos (incluidos los esclavos) lo aceptaban porque creían que era el orden natural del cosmos.",
-    quote: "Los órdenes imaginados que sustentaban estas redes no eran neutros ni justos. Dividían a la gente en grupos artificiales, dispuestos en una jerarquía.",
-    stat1: { value: "3800", label: "años de antigüedad del Código de Hammurabi" },
-    stat2: { value: "3", label: "clases sociales oficiales en Babilonia" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"📜", cat:"Escritura",
+    headline:"La escritura no se inventó para la poesía: fue para llevar la contabilidad",
+    chapter:"Cap. 7 · Sobrecarga de memoria",
+    dev:"Los primeros textos escritos conocidos, en tablillas de arcilla sumerias de hace 5.000 años, no son poemas ni filosofía. Son registros de impuestos, inventarios de granos y listas de deudas. La escritura nació de la burocracia, no de la inspiración. La literatura llegó mucho después.",
+    quote:"La evolución no dotó a los humanos con la capacidad de jugar al fútbol. Pero los adolescentes humanos pueden jugar con completos extraños porque todos han aprendido un conjunto idéntico de ideas imaginarias.",
+    s1:{v:"3200", l:"a.C.: primeras tablillas escritas sumerias"}, s2:{v:"📊", l:"primer uso: contabilidad fiscal"}
   },
   {
-    category: "Órdenes imaginados",
-    icon: "⚖️",
-    headline: "La Declaración de Independencia de 1776 también establecía una jerarquía oculta",
-    chapter: "Capítulo 8 · No hay justicia en la historia",
-    development: "'Todos los hombres son creados iguales' era literal: excluía a las mujeres, a los esclavos negros y a los nativos americanos. El orden imaginado estadounidense proclamaba igualdad mientras consagraba la esclavitud. Toda civilización tiene sus ficciones fundacionales que sus contemporáneos no pueden ver porque están dentro de ellas.",
-    quote: "A pesar de su proclamación de la igualdad de todos los hombres, el orden imaginado que los americanos fundaron en 1776 también establecía una jerarquía entre los hombres y las mujeres.",
-    stat1: { value: "1776", label: "año de la Declaración de Independencia" },
-    stat2: { value: "1865", label: "año de abolición de la esclavitud en EE.UU." }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"⚖️", cat:"Órdenes imaginados",
+    headline:"El Código de Hammurabi dividía a las personas en superiores, plebeyos y esclavos",
+    chapter:"Cap. 8 · No hay justicia en la historia",
+    dev:"Hammurabi, rey de Babilonia hace 3.800 años, codificó el primer gran sistema legal. Si un superior mataba a un plebeyo, pagaba una multa. Si un esclavo golpeaba a su amo, le cortaban la oreja. Lo fascinante es que todos lo aceptaban porque creían que era el orden natural del cosmos.",
+    quote:"Los órdenes imaginados que sustentaban estas redes no eran neutros ni justos. Dividían a la gente en grupos artificiales, dispuestos en una jerarquía.",
+    s1:{v:"3800", l:"años de antigüedad del Código de Hammurabi"}, s2:{v:"3", l:"clases sociales oficiales en Babilonia"}
   },
   {
-    category: "Dinero",
-    icon: "💰",
-    headline: "El dinero es el sistema de confianza mutua más universal jamás creado",
-    chapter: "Capítulo 10 · El olor del dinero",
-    development: "El dinero no tiene valor intrínseco. Un billete de 100 euros es solo un trozo de papel. Pero mientras millones de personas crean que vale, vale. El dinero es la ficción más exitosa de la humanidad, más poderosa que cualquier religión o ideología, porque puede traducir cualquier cosa en cualquier otra cosa. Un médico puede intercambiar su conocimiento por un automóvil sin necesidad de que el fabricante esté enfermo.",
-    quote: "El olor del dinero es el mismo en todas partes. Los hindúes, musulmanes, españoles y aztecas podían ponerse de acuerdo sobre el valor del oro aunque discreparan en casi todo lo demás.",
-    stat1: { value: "3000", label: "a.C.: primeras monedas de intercambio" },
-    stat2: { value: "∞", label: "culturas que confían en el dinero" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"💰", cat:"Dinero",
+    headline:"Los aztecas usaban semillas de cacao como moneda cuando llegaron los españoles",
+    chapter:"Cap. 10 · El olor del dinero",
+    dev:"Cuando Hernán Cortés llegó a México en 1519, los aztecas pagaban con semillas de cacao o rollos de tela. La obsesión española por el oro les parecía incomprensible. Cortés contestó: 'Tenemos mal de corazón, enfermedad que sana con ello.' Dos sistemas monetarios igualmente arbitrarios, igualmente basados en la fe colectiva.",
+    quote:"Cuando un azteca quería comprar algo, por lo general pagaba mediante semillas de cacao o rollos de tela.",
+    s1:{v:"1519", l:"año del encuentro Cortés-aztecas"}, s2:{v:"🍫", l:"moneda azteca: semillas de cacao"}
   },
   {
-    category: "Dinero",
-    icon: "💰",
-    headline: "Los aztecas usaban semillas de cacao como moneda cuando llegaron los españoles",
-    chapter: "Capítulo 10 · El olor del dinero",
-    development: "Cuando Hernán Cortés llegó a México en 1519, los aztecas pagaban con semillas de cacao o rollos de tela. La obsesión española por el oro les parecía incomprensible: '¿Para qué quieres ese metal que no puedes comer ni beber?' Cortés contestó: 'Tenemos mal de corazón, enfermedad que sana con ello.' Dos sistemas monetarios igualmente arbitrarios, igualmente basados en la fe colectiva.",
-    quote: "Cuando un azteca quería comprar algo, por lo general pagaba mediante semillas de cacao o rollos de tela.",
-    stat1: { value: "1519", label: "año del encuentro Cortés-aztecas" },
-    stat2: { value: "🍫", label: "moneda azteca: semillas de cacao" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🏛️", cat:"Imperios",
+    headline:"Numancia, una pequeña ciudad celta, humilló a Roma durante 20 años",
+    chapter:"Cap. 11 · Visiones imperiales",
+    dev:"En el siglo II a.C., Roma dominaba el Mediterráneo. Pero una pequeña ciudad montañesa de la Hispania céltica resistió y humilló a legión tras legión durante 20 años. Solo el mejor general de Roma, con 30.000 soldados, logró someterla. Los numantinos prefirieron quemarlo todo y suicidarse antes que rendirse.",
+    quote:"Los romanos estaban acostumbrados a ser derrotados. Podían perder batalla tras batalla pero aun así ganar la guerra. Un imperio que no puede aguantar un golpe no es realmente un imperio.",
+    s1:{v:"20", l:"años resistiendo Numancia a Roma"}, s2:{v:"30K", l:"soldados romanos para vencer a una ciudad"}
   },
   {
-    category: "Imperios",
-    icon: "🏛️",
-    headline: "Numancia, una pequeña ciudad celta, humilló a Roma durante 20 años",
-    chapter: "Capítulo 11 · Visiones imperiales",
-    development: "En el siglo II a.C., Roma dominaba el Mediterráneo. Había destruido Cartago, conquistado Grecia y Macedonia. Pero una pequeña ciudad montañesa de la Hispania céltica llamada Numancia resistió y humilló a legión tras legión. Solo el mejor general de Roma, Escipión Emiliano, con 30.000 soldados, logró someterla en 134 a.C. mediante un asedio total. Los numantinos prefirieron quemar la ciudad y suicidarse antes de rendirse.",
-    quote: "Los romanos estaban acostumbrados a ser derrotados. Al igual que los mandatarios de la mayor parte de los grandes imperios, podían perder batalla tras batalla pero aun así ganar la guerra.",
-    stat1: { value: "20", label: "años resistiendo Numancia a Roma" },
-    stat2: { value: "30K", label: "soldados romanos para vencer a una ciudad" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"✝️", cat:"Religión",
+    headline:"Hay 2.000 millones de cristianos y solo 150.000 zoroastristas en el mundo",
+    chapter:"Cap. 13 · El secreto del éxito",
+    dev:"El zoroastrismo, la primera religión monoteísta grande, inspiró tanto al judaísmo como al islam y al cristianismo. En su momento fue la religión del Imperio Persa. ¿Por qué casi desapareció mientras el islam y el cristianismo florecieron? La historia no recompensa a los mejores, sino a los más adaptables.",
+    quote:"¿Por qué hay alrededor de 2.000 millones de cristianos y 1.250 millones de musulmanes pero solo 150.000 zoroastristas y ningún maniqueo?",
+    s1:{v:"2B", l:"cristianos en el mundo"}, s2:{v:"150K", l:"zoroastristas supervivientes"}
   },
   {
-    category: "Religión",
-    icon: "✝️",
-    headline: "Hay 2.000 millones de cristianos y solo 150.000 zoroastristas en el mundo",
-    chapter: "Capítulo 13 · El secreto del éxito",
-    development: "El zoroastrismo, la primera religión monoteísta grande, inspiró tanto al judaísmo como al islam y al cristianismo. En su momento fue la religión del Imperio Persa, el más poderoso del mundo. ¿Por qué casi desapareció mientras el islam y el cristianismo florecieron? La historia no recompensa a los mejores, sino a los más adaptables y agresivos en su expansión.",
-    quote: "¿Por qué hay alrededor de 2.000 millones de cristianos y 1.250 millones de musulmanes pero solo 150.000 zoroastristas y ningún maniqueo?",
-    stat1: { value: "2B", label: "cristianos en el mundo" },
-    stat2: { value: "150K", label: "zoroastristas supervivientes" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🔭", cat:"Revolución Científica",
+    headline:"En 1500, la humanidad produjo 250.000 millones de dólares. Hoy: 60 billones",
+    chapter:"Cap. 14 · El descubrimiento de la ignorancia",
+    dev:"En solo 500 años, la producción económica humana se multiplicó por 240. En 1500 éramos 500 millones de personas; hoy somos 7.000 millones. La clave fue la revolución científica, que permitió convertir el conocimiento en poder de una manera que ninguna civilización anterior había logrado.",
+    quote:"Si uno de los marineros de Colón se hubiera despertado al sentir la señal de llamada de un iPhone del siglo XXI, se habría sentido en un mundo extraño más allá de toda comprensión.",
+    s1:{v:"×240", l:"aumento de producción en 500 años"}, s2:{v:"500M→7B", l:"crecimiento de población en 500 años"}
   },
   {
-    category: "Revolución Científica",
-    icon: "🔭",
-    headline: "En 1500, la humanidad produjo el equivalente a 250.000 millones de dólares. Hoy: 60 billones",
-    chapter: "Capítulo 14 · El descubrimiento de la ignorancia",
-    development: "En solo 500 años, la producción económica humana se multiplicó por 240. En 1500 éramos 500 millones de personas; hoy somos 7.000 millones. Pero los recursos no solo se repartieron más: también se multiplicaron. La clave fue la revolución científica, que permitió convertir el conocimiento en poder de una manera que ninguna civilización anterior había logrado.",
-    quote: "Si uno de los marineros de Colón hubiera caído en un sopor similar y se hubiera despertado al sentir la señal de llamada de un iPhone del siglo XXI, se habría sentido en un mundo extraño más allá de toda comprensión.",
-    stat1: { value: "×240", label: "aumento de producción en 500 años" },
-    stat2: { value: "500M→7B", label: "población humana en 500 años" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🔭", cat:"Revolución Científica",
+    headline:"La ciencia moderna comenzó cuando los europeos admitieron que no sabían nada",
+    chapter:"Cap. 14 · El descubrimiento de la ignorancia",
+    dev:"Todas las culturas anteriores creían tener el conocimiento fundamental del mundo. La revolución científica surgió de la admisión de la ignorancia. Por primera vez la humanidad consideró que el futuro podría ser radicalmente diferente al presente, y que el conocimiento podría cambiarlo todo.",
+    quote:"La revolución científica no fue una revolución del conocimiento. Fue sobre todo una revolución de la ignorancia. El gran descubrimiento fue que los humanos no sabían las respuestas a sus preguntas más importantes.",
+    s1:{v:"1543", l:"Copérnico: el Sol es el centro"}, s2:{v:"500", l:"años desde el inicio de la ciencia moderna"}
   },
   {
-    category: "Revolución Científica",
-    icon: "🔭",
-    headline: "La ciencia moderna comenzó cuando los europeos admitieron que no sabían nada",
-    chapter: "Capítulo 14 · El descubrimiento de la ignorancia",
-    development: "Todas las culturas anteriores creían tener el conocimiento fundamental del mundo, ya fuera en sagradas escrituras o en sabiduría ancestral. La revolución científica surgió de la admisión de la ignorancia: 'No sabemos, así que investiguemos.' Por primera vez, la humanidad consideró que el futuro podría ser radicalmente diferente al presente, y que el conocimiento podría cambiarlo todo.",
-    quote: "La revolución científica no fue una revolución del conocimiento. Fue, sobre todo, una revolución de la ignorancia. El gran descubrimiento que la inició fue el descubrimiento de que los humanos no sabían las respuestas a sus preguntas más importantes.",
-    stat1: { value: "1543", label: "Copérnico: el Sol es el centro" },
-    stat2: { value: "500", label: "años desde el inicio de la ciencia moderna" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"📈", cat:"Capitalismo",
+    headline:"El capitalismo funciona porque todos creemos colectivamente en el futuro",
+    chapter:"Cap. 16 · El credo capitalista",
+    dev:"El crédito existe porque prestamos dinero que aún no existe esperando que el futuro lo genere. Sin esa fe colectiva en el mañana, los bancos cerrarían. El capitalismo es la religión más exitosa del mundo moderno, con sus sacerdotes (economistas), sus templos (bolsas) y sus rituales (PIB trimestral).",
+    quote:"Para comprender la historia económica moderna, solo necesitamos comprender una única palabra. La palabra es crecimiento.",
+    s1:{v:"1500→hoy", l:"PIB per cápita multiplicado por 13"}, s2:{v:"3%", l:"crecimiento anual considerado 'sano'"}
   },
   {
-    category: "Ciencia e Imperio",
-    icon: "🌍",
-    headline: "En 1769, Europa envió expediciones a todos los continentes para observar Venus",
-    chapter: "Capítulo 15 · El matrimonio de ciencia e imperio",
-    development: "Para medir la distancia exacta entre la Tierra y el Sol, los astrónomos del siglo XVIII necesitaban observar el tránsito de Venus desde diferentes puntos del planeta. La comunidad científica europea movilizó expediciones a Siberia, Norteamérica, Madagascar, Sudáfrica y el Pacífico Sur. El capitán Cook navegó hasta Tahití. La ciencia y el imperialismo viajaban juntos: cada expedición también era de conquista.",
-    quote: "Los astrónomos predijeron que los siguientes tránsitos de Venus tendrían lugar en 1761 y 1769. Desde Europa se enviaron expediciones a los cuatro confines del mundo.",
-    stat1: { value: "1769", label: "tránsito de Venus desde todos los continentes" },
-    stat2: { value: "150M km", label: "distancia Tierra-Sol, medida así" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"⚙️", cat:"Revolución Industrial",
+    headline:"Los animales domésticos pesan más que todos los animales salvajes del mundo juntos",
+    chapter:"Cap. 18 · Una revolución permanente",
+    dev:"Los 7.000 millones de humanos pesamos unos 300 millones de toneladas. Nuestros animales domésticos pesan 700 millones de toneladas. Todos los grandes animales salvajes que quedan (elefantes, ballenas, leones) apenas suman 100 millones de toneladas. Los libros infantiles están llenos de animales salvajes; el mundo real, mucho menos.",
+    quote:"La masa combinada de todos los grandes animales salvajes que sobreviven no llega a los 100 millones de toneladas.",
+    s1:{v:"700M t", l:"peso de animales domésticos"}, s2:{v:"100M t", l:"peso de todos los animales salvajes"}
   },
   {
-    category: "Capitalismo",
-    icon: "📈",
-    headline: "El capitalismo funciona porque todos creemos en el futuro",
-    chapter: "Capítulo 16 · El credo capitalista",
-    development: "El crédito existe porque prestamos dinero que aún no existe esperando que el futuro lo genere. Toda la economía moderna es una apuesta colectiva al crecimiento perpetuo. Sin esa fe en el mañana, los bancos cerrarían mañana mismo. El capitalismo no es solo una teoría económica: es la religión más exitosa del mundo moderno, con sus sacerdotes (economistas), sus templos (bolsas de valores) y sus rituales (PIB trimestral).",
-    quote: "Para comprender la historia económica moderna, solo necesitamos comprender una única palabra. La palabra es crecimiento.",
-    stat1: { value: "1500→hoy", label: "PIB per cápita se multiplicó por 13" },
-    stat2: { value: "3%", label: "crecimiento anual considerado 'sano'" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"😊", cat:"Felicidad",
+    headline:"No sabemos si somos más felices que los cazadores-recolectores",
+    chapter:"Cap. 19 · Y vivieron felices por siempre jamás",
+    dev:"Con todo nuestro progreso tecnológico y médico, ¿somos realmente más felices que nuestros antepasados que vivían en cuevas? La biología evolutiva sugiere que la felicidad no está determinada por condiciones externas sino por niveles de serotonina y dopamina en el cerebro, niveles que no han cambiado en 70.000 años.",
+    quote:"¿Fue más feliz Neil Armstrong, cuyas huellas permanecen intactas sobre la Luna, que el cazador-recolector anónimo que hace 30.000 años dejó la huella de su mano en la cueva de Chauvet?",
+    s1:{v:"?", l:"diferencia de felicidad en 70.000 años"}, s2:{v:"30K", l:"años desde las pinturas de Chauvet"}
   },
   {
-    category: "Capitalismo",
-    icon: "📈",
-    headline: "La Compañía de las Indias Orientales tenía su propio ejército y hacía guerras",
-    chapter: "Capítulo 16 · El credo capitalista",
-    development: "La Compañía Neerlandesa de las Indias Orientales (VOC), fundada en 1602, fue la primera empresa en emitir acciones al público. Pero también mantenía un ejército de 40.000 soldados, acuñaba moneda, fundaba colonias y declaraba guerras. Los accionistas de Ámsterdam controlaban un poder militar mayor que muchos reinos europeos. El capitalismo y el imperialismo nacieron gemelos.",
-    quote: "La economía moderna crece gracias a nuestra esperanza en el futuro y a la buena disposición de los capitalistas a reinvertir sus ganancias en la producción.",
-    stat1: { value: "1602", label: "fundación de la primera empresa con acciones" },
-    stat2: { value: "40K", label: "soldados del ejército privado de la VOC" }
+    book:"Sapiens", bookShort:"Sapiens", author:"Harari", icon:"🧬", cat:"Futuro",
+    headline:"Homo sapiens está a punto de reemplazar la evolución natural por el diseño inteligente",
+    chapter:"Cap. 20 · El final de Homo sapiens",
+    dev:"Durante 4.000 millones de años, toda vida en la Tierra evolucionó por selección natural. Ningún ser fue diseñado. Pero hoy la ingeniería genética, la inteligencia artificial y las interfaces cerebro-máquina están cambiando eso. Somos la primera especie capaz de rediseñarse deliberadamente.",
+    quote:"Homo sapiens trasciende sus límites biológicos. Ahora está empezando a quebrar las leyes de la selección natural, sustituyéndolas con las leyes del diseño inteligente.",
+    s1:{v:"4B años", l:"de evolución natural"}, s2:{v:"2018", l:"primer gen editado en embriones humanos"}
+  },
+
+  /* ====== EL CUERPO HUMANO ====== */
+  {
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🧪", cat:"Bioquímica",
+    headline:"El cuerpo humano está compuesto por 59 elementos químicos diferentes",
+    chapter:"Cap. 1 · Cómo construir un humano",
+    dev:"En 2013, la Real Sociedad de Química del Reino Unido calculó cuánto costaría construir al actor Benedict Cumberbatch. Son necesarios 59 elementos, desde carbono y oxígeno hasta germanio y selenio en cantidades minúsculas. El coste total: alrededor de 96.546 libras esterlinas. En el siglo XIX se estimaba que costaba solo 5 dólares.",
+    quote:"Todos los elementos necesarios para construir un ser humano podían comprarse en una droguería más o menos por unos 5 dólares. Era una revelación tremendamente humillante.",
+    s1:{v:"59", l:"elementos químicos en el cuerpo humano"}, s2:{v:"96K £", l:"coste de construir un humano en 2013"}
   },
   {
-    category: "Revolución Industrial",
-    icon: "⚙️",
-    headline: "Los animales domésticos de hoy pesan más que todos los animales salvajes juntos",
-    chapter: "Capítulo 18 · Una revolución permanente",
-    development: "Los 7.000 millones de humanos pesamos unos 300 millones de toneladas. Nuestros animales domésticos (vacas, cerdos, pollos) pesan 700 millones de toneladas. Todos los grandes animales salvajes que quedan (elefantes, ballenas, leones, jirafas) apenas suman 100 millones de toneladas. Los libros infantiles están llenos de animales salvajes, pero en el mundo real casi han desaparecido.",
-    quote: "En contraste, la masa combinada de todos los grandes animales salvajes que sobreviven no llega a los 100 millones de toneladas.",
-    stat1: { value: "700M t", label: "peso de animales domésticos" },
-    stat2: { value: "100M t", label: "peso de todos los animales salvajes" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🫀", cat:"Anatomía",
+    headline:"La piel es el órgano más grande del cuerpo: 2 m² y hasta 7 kilos",
+    chapter:"Cap. 2 · El exterior: la piel y el pelo",
+    dev:"La piel mantiene las tripas dentro y las cosas malas fuera. Amortigua golpes, regula temperatura y se repara sola. Es más fina en los párpados (0,025 mm) y más gruesa en palmas y plantas. Lo más llamativo: la superficie más externa de la piel está compuesta completamente de células muertas.",
+    quote:"Nuestra piel es nuestro mayor órgano, y posiblemente el más versátil. 'Nuestras costuras no revientan ni tenemos fugas espontáneas', sostiene Nina Jablonski.",
+    s1:{v:"2 m²", l:"área de la piel de un adulto"}, s2:{v:"4-7 kg", l:"peso de la piel"}
   },
   {
-    category: "Revolución Industrial",
-    icon: "⚙️",
-    headline: "La familia nuclear es un invento de la Revolución Industrial",
-    chapter: "Capítulo 18 · Una revolución permanente",
-    development: "Durante casi toda la historia humana, las personas vivieron en redes de familia extensa y comunidades tribales. El Estado y el mercado moderno destruyeron esas redes y las sustituyeron por la familia nuclear, los sindicatos y el Estado del bienestar. Cuando hoy te despiden del trabajo, no acudes a tu tribu: acudes al SEPE. El mercado ha reemplazado los vínculos tribales con relaciones comerciales.",
-    quote: "La revolución industrial dio a conocer nuevas maneras de convertir la energía y de producir mercancías, liberando en gran medida a la humanidad de su dependencia del ecosistema circundante.",
-    stat1: { value: "1760", label: "inicio de la Revolución Industrial" },
-    stat2: { value: "🏭→🏠", label: "de familia extensa a familia nuclear" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🦠", cat:"Microbioma",
+    headline:"Somos el hogar de billones de bacterias que nos aportan el 10% de nuestras calorías",
+    chapter:"Cap. 3 · El yo microbiano",
+    dev:"Los humanos producimos 20 enzimas digestivas. Las bacterias que vivimos en nuestro interior producen 10.000 (quinientas veces más). Sin ellas, nuestra vida estaría muchísimo peor alimentada. El 80% del aire que respiramos es nitrógeno, que sin las bacterias sería inutilizable para la vida.",
+    quote:"Somos el hogar de billones y billones de diminutos seres vivos que nos resultan sorprendentemente beneficiosos. Nos proporcionan alrededor del 10% de nuestras calorías.",
+    s1:{v:"10K", l:"enzimas producidas por nuestras bacterias"}, s2:{v:"20", l:"enzimas que producimos nosotros solos"}
   },
   {
-    category: "Felicidad",
-    icon: "😊",
-    headline: "No sabemos si somos más felices que los cazadores-recolectores",
-    chapter: "Capítulo 19 · Y vivieron felices por siempre jamás",
-    development: "La pregunta más importante que Harari plantea: con todo nuestro progreso tecnológico, médico y económico, ¿somos realmente más felices que nuestros antepasados que vivían en cuevas? La biología evolutiva sugiere que la felicidad no está determinada por las condiciones externas sino por los niveles de serotonina, dopamina y oxitocina en el cerebro. Y esos niveles no han cambiado mucho en 70.000 años.",
-    quote: "¿Fue más feliz el recientemente fallecido Neil Armstrong, cuyas huellas permanecen intactas sobre la Luna carente de viento, que el cazador-recolector anónimo que hace 30.000 años dejó la huella de su mano en una pared de la cueva de Chauvet?",
-    stat1: { value: "?", label: "diferencia de felicidad en 70.000 años" },
-    stat2: { value: "30K", label: "años desde las pinturas de Chauvet" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🧠", cat:"Neurología",
+    headline:"El cerebro nunca ha visto el mundo directamente: solo procesa impulsos eléctricos",
+    chapter:"Cap. 4 · El cerebro",
+    dev:"El cerebro vive en silencio y oscuridad completos, como un preso en una mazmorra. No tiene receptores de dolor. Nunca ha sentido el sol ni una brisa. Para él, el mundo es solo una corriente de impulsos eléctricos como código Morse. A partir de esa información desnuda construye para nosotros toda la experiencia del mundo.",
+    quote:"El cerebro vive en el silencio y la oscuridad, como un preso en una mazmorra. No tiene receptores de dolor y para él, el mundo es solo una corriente de impulsos eléctricos.",
+    s1:{v:"75-80%", l:"del cerebro es agua"}, s2:{v:"🧱", l:"consistencia: como tofu o mantequilla blanda"}
   },
   {
-    category: "Felicidad",
-    icon: "😊",
-    headline: "El budismo lleva 2.500 años investigando científicamente la felicidad",
-    chapter: "Capítulo 19 · Y vivieron felices por siempre jamás",
-    development: "Mientras los occidentales buscaban la felicidad cambiando el mundo exterior (más riqueza, más poder, más conquistas), el budismo propuso investigar la mente directamente. La meditación vipassana es básicamente un experimento científico sobre la conciencia. Los modernos estudios de neurociencia están validando muchas de sus conclusiones sobre el sufrimiento y la impermanencia.",
-    quote: "Los últimos 500 años han sido testigos de una serie de revoluciones pasmosas. Pero ¿somos más felices?",
-    stat1: { value: "2500", label: "años de tradición budista meditativa" },
-    stat2: { value: "2024", label: "las apps de meditación valen miles de millones" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"☠️", cat:"Historia médica",
+    headline:"Una cabeza decapitada puede mantener consciencia hasta 7 segundos",
+    chapter:"Cap. 5 · La cabeza",
+    dev:"La Revolución francesa proporcionó a las mentes científicas un suministro constante de cabezas recién cortadas para examinar. Los estudios estimaron que una cabeza conserva algo de consciencia entre 2 y 7 segundos tras la guillotina. Charlotte Corday, ejecutada en 1793, supuestamente mostró una expresión de furia cuando el verdugo alzó su cabeza ante la multitud.",
+    quote:"Muchos observadores de ejecuciones afirmaban haber presenciado signos de consciencia en las cabezas recién cortadas.",
+    s1:{v:"2-7s", l:"consciencia tras la decapitación"}, s2:{v:"1793", l:"Revolución francesa: experimentos involuntarios"}
   },
   {
-    category: "Futuro de los sapiens",
-    icon: "🧬",
-    headline: "Homo sapiens está a punto de reemplazar la evolución natural por el diseño inteligente",
-    chapter: "Capítulo 20 · El final de Homo sapiens",
-    development: "Durante 4.000 millones de años, toda vida en la Tierra evolucionó por selección natural. Ningún ser fue diseñado. Pero hoy la ingeniería genética, la inteligencia artificial y las interfaces cerebro-máquina están cambiando eso. Somos la primera especie capaz de rediseñarse a sí misma deliberadamente. ¿Seguiremos siendo Homo sapiens o nos convertiremos en algo completamente diferente?",
-    quote: "Homo sapiens trasciende dichos límites. Ahora está empezando a quebrar las leyes de la selección natural, sustituyéndolas con las leyes del diseño inteligente.",
-    stat1: { value: "4B", label: "años de evolución natural" },
-    stat2: { value: "2024", label: "primera edición genética en humanos vivos" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🫀", cat:"Fisiología",
+    headline:"El corazón late 100.000 veces al día y 3.500 millones de veces en toda una vida",
+    chapter:"Cap. 7 · El corazón y la sangre",
+    dev:"Con una frecuencia de algo más de una vez por segundo, late rítmicamente para empujar la sangre a través del cuerpo. No son suaves empujoncitos sino sacudidas lo suficientemente potentes para proyectar un chorro de sangre a tres metros. El símbolo del corazón de San Valentín aparece misteriosamente en pinturas italianas del siglo XIV y nadie sabe qué lo inspiró.",
+    quote:"El corazón es el órgano más firme e inquebrantable de nuestro cuerpo. Tiene un solo trabajo que hacer, y lo hace extraordinariamente bien: latir.",
+    s1:{v:"100K", l:"latidos al día"}, s2:{v:"3.500M", l:"latidos en toda una vida"}
   },
   {
-    category: "Futuro de los sapiens",
-    icon: "🧬",
-    headline: "Podríamos ser la última generación de Homo sapiens",
-    chapter: "Capítulo 20 · El final de Homo sapiens",
-    development: "Harari argumenta que en los próximos siglos, la combinación de ingeniería genética, nanotecnología e inteligencia artificial podría transformar a los humanos en seres tan diferentes de nosotros como nosotros lo somos de los neandertales. No será el fin del mundo: será el fin del ser humano tal como lo conocemos. Los que vengan después podrían mirarnos con la misma distancia con que nosotros miramos a los Homo erectus.",
-    quote: "Homo sapiens está a punto de convertirse en algo diferente. No como resultado de una invasión alienígena ni de un asteroide, sino de las propias decisiones de los sapiens.",
-    stat1: { value: "?", label: "años hasta el próximo Homo" },
-    stat2: { value: "🧬", label: "la evolución ahora la diseñamos nosotros" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🪙", cat:"Historia médica",
+    headline:"El ingeniero Brunel se tragó una moneda de oro durante un truco de magia en 1843",
+    chapter:"Cap. 6 · ¡Salud! La boca y la garganta",
+    dev:"Isambard Kingdom Brunel, uno de los mayores ingenieros de la historia, se tragó accidentalmente una moneda de medio soberano de oro mientras hacía un truco para sus hijos. El incidente se convirtió en la comidilla de toda Gran Bretaña. Brunel diseñó un aparato giratorio para intentar extraerla. Finalmente sobrevivió tras semanas de intentos.",
+    quote:"Brunel diseñó un artilugio que le permitía colgarse boca abajo y balancearse describiendo amplios arcos con la esperanza de que el movimiento y la gravedad harían caer la moneda.",
+    s1:{v:"1843", l:"año del accidente de Brunel"}, s2:{v:"🪙", l:"objeto: moneda de medio soberano de oro"}
   },
   {
-    category: "Revolución Agrícola",
-    icon: "🌾",
-    headline: "El trigo pasó de hierba salvaje a cubrir 225 millones de hectáreas en 10.000 años",
-    chapter: "Capítulo 5 · El mayor fraude de la historia",
-    development: "Desde la perspectiva del trigo, la revolución agrícola fue un éxito evolutivo brillante. Hace 10.000 años era una hierba silvestre en un pequeño rincón de Oriente Próximo. Hoy cubre más superficie que cualquier otro organismo en la Tierra, salvo los bosques. Los humanos dedicamos nuestra vida a protegerlo, regarlo y fertilizarlo. ¿Quién domesticó a quién?",
-    quote: "El trigo no dio a los humanos una vida mejor. Lo que el trigo consiguió fue propagar sus genes por todo el planeta.",
-    stat1: { value: "225M ha", label: "de trigo cultivado en el mundo" },
-    stat2: { value: "10K", label: "años desde que el trigo nos 'domesticó'" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"💨", cat:"Respiración",
+    headline:"En cada respiración inhalas moléculas del aliento de todas las personas que han vivido",
+    chapter:"Cap. 13 · ¡Respire hondo! Los pulmones y la respiración",
+    dev:"Cada vez que respiramos exhalamos unos 25.000 trillones de moléculas de oxígeno. Con esas cantidades, en la respiración de un solo día inhalamos con toda probabilidad al menos una molécula del aliento de cada persona que ha vivido hasta ahora, y de cada persona que vivirá en el futuro hasta que el sol se apague.",
+    quote:"Cada vez que respiramos exhalamos 25.000 trillones de moléculas. En un solo día inhalamos al menos una molécula del aliento de todas las personas que han vivido hasta ahora.",
+    s1:{v:"20.000", l:"respiraciones al día"}, s2:{v:"550M", l:"respiraciones en toda una vida"}
   },
   {
-    category: "Órdenes imaginados",
-    icon: "⚖️",
-    headline: "Las corporaciones son personas legales que pueden vivir para siempre",
-    chapter: "Capítulo 7 · Sobrecarga de memoria",
-    development: "La Iglesia Católica, fundada hace 2.000 años, sigue existiendo hoy. Google, fundada en 1998, tiene más poder que muchos países. Las corporaciones son entidades imaginarias (no puedes tocar a 'Google') que sin embargo tienen derechos legales, pueden demandar y ser demandadas, y son potencialmente inmortales. Son la tecnología organizativa más poderosa que los humanos han inventado.",
-    quote: "Las reglas del fútbol son relativamente simples y concisas, de manera parecida a lo que ocurre con las que son necesarias para la cooperación en una banda de cazadores-recolectores.",
-    stat1: { value: "2000", label: "años de antigüedad de la Iglesia Católica" },
-    stat2: { value: "∞", label: "vida útil teórica de una corporación" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🏃", cat:"Evolución",
+    headline:"Somos el único de los 250 primates que camina exclusivamente sobre dos piernas",
+    chapter:"Cap. 10 · ¡En marcha! Bipedestación y ejercicio",
+    dev:"Nadie sabe con certeza por qué caminamos como lo hacemos. Algunas teorías: liberar las manos para cargar crías, mejorar la visión en campo abierto, lanzar proyectiles. Pero bajar de los árboles nos hizo extremadamente vulnerables. Lucy, nuestra antepasada de hace 3,2 millones de años, medía solo 1 metro y pesaba 27 kilos.",
+    quote:"Nadie sabe por qué caminamos como lo hacemos. De entre aproximadamente 250 especies de primates, nosotros somos los únicos que nos hemos erguido y desplazamos exclusivamente sobre dos piernas.",
+    s1:{v:"250", l:"especies de primates existentes"}, s2:{v:"1 sola", l:"que camina sobre dos piernas: nosotros"}
   },
   {
-    category: "Ciencia e Imperio",
-    icon: "🌍",
-    headline: "Los europeos conquistaron el mundo porque admitían su ignorancia",
-    chapter: "Capítulo 15 · El matrimonio de ciencia e imperio",
-    development: "Cuando los europeos llegaron a América en 1492, dibujaron mapas con grandes espacios en blanco marcados como 'terra incognita'. Los mapas chinos, árabes y aztecas no tenían espacios en blanco: estaban llenos de lugares conocidos. La disposición a admitir la ignorancia fue la ventaja competitiva que permitió a Europa explorar, conquistar y eventualmente dominar el planeta.",
-    quote: "Para los españoles y los portugueses, el mundo era un libro todavía no escrito, lleno de páginas en blanco esperando ser descubiertas.",
-    stat1: { value: "1492", label: "Colón admite que hay mundos desconocidos" },
-    stat2: { value: "⬜", label: "'Terra incognita': ventaja competitiva europea" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"💊", cat:"Historia médica",
+    headline:"Un estudiante sin experiencia descubrió la insulina leyendo un artículo por casualidad",
+    chapter:"Cap. 8 · El departamento de química",
+    dev:"Frederick Banting, un médico de cabecera canadiense, leyó en 1920 un artículo sobre el páncreas y creyó tener una idea para curar la diabetes. No tenía experiencia en investigación. Incluso escribió mal 'diabetes' en sus notas. Pero funcionó. Su descubrimiento de la insulina salvó millones de vidas y le valió el Premio Nobel.",
+    quote:"Banting sabía tan poco de la diabetes que, de hecho, incluso escribió mal el nombre en sus notas, donde garabateó 'diabetus'.",
+    s1:{v:"1920", l:"año del descubrimiento de la insulina"}, s2:{v:"Nobel", l:"premio obtenido por un médico rural sin experiencia"}
   },
   {
-    category: "Revolución Industrial",
-    icon: "⚙️",
-    headline: "La Revolución Industrial convirtió el tiempo en un recurso escaso por primera vez",
-    chapter: "Capítulo 17 · Las ruedas de la industria",
-    development: "Antes de la industrialización, el tiempo era abundante y cíclico: seguías el ritmo de las estaciones y el sol. La fábrica introdujo el horario fijo, el turno de ocho horas y el reloj de fichar. Por primera vez en la historia, 'llegar tarde' era un delito. El capitalismo industrial necesitaba que los cuerpos humanos fueran tan precisos y sincronizados como los engranajes de una máquina.",
-    quote: "Consideremos la industria de los vehículos. A lo largo de los últimos 300 años, la humanidad ha fabricado miles de millones de vehículos.",
-    stat1: { value: "1760", label: "inicio del reloj como tirano social" },
-    stat2: { value: "8h", label: "la jornada industrial estándar" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"😴", cat:"Neurología",
+    headline:"Pasamos un tercio de nuestra vida durmiendo y no sabemos exactamente para qué sirve",
+    chapter:"Cap. 16 · El sueño",
+    dev:"Dormir es lo más misterioso que hacemos. Sabemos que es vital; ignoramos exactamente por qué. Si nos privan de sueño el tiempo suficiente, moriremos, pero también es un misterio qué nos mata exactamente. No hay ninguna parte del cuerpo que no se beneficie del sueño o no sufra por su ausencia.",
+    quote:"Dormir es lo más misterioso que hacemos. Sabemos que es vital; solo que ignoramos exactamente por qué.",
+    s1:{v:"⅓", l:"de nuestra vida la pasamos dormidos"}, s2:{v:"66", l:"años que Bryson lleva dormido el siglo XXI"}
   },
   {
-    category: "Cazadores-recolectores",
-    icon: "🏹",
-    headline: "Los primeros sapiens en Australia probablemente hablaban con los muertos",
-    chapter: "Capítulo 4 · El diluvio",
-    development: "Los aborígenes australianos mantuvieron una de las culturas más antiguas del mundo durante 45.000 años, desarrollando complejos sistemas de creencias, historias del Dreamtime y conexión espiritual con la tierra. Sin escritura, sin ciudades, sin metal, construyeron una civilización de la mente que duró diez veces más que toda la historia occidental. La 'primitividad' es una categoría inventada por los que llegaron después.",
-    quote: "Con el fin de alcanzar Australia, los humanos tuvieron que cruzar varios brazos de mar, algunos de más de 100 kilómetros de ancho.",
-    stat1: { value: "45.000", label: "años de cultura aborigen australiana" },
-    stat2: { value: "×10", label: "más antigua que toda la historia occidental" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🦠", cat:"Medicina",
+    headline:"En 2011 murieron más personas por estilos de vida que por todas las infecciones juntas",
+    chapter:"Cap. 23 · El final",
+    dev:"Por primera vez en la historia de la humanidad, las enfermedades no transmisibles como fallo cardiaco, apoplejía y diabetes superaron a todas las enfermedades infecciosas juntas. En la práctica estamos eligiendo nuestra propia forma de morir, aunque lo hacemos sin demasiada reflexión.",
+    quote:"Vivimos en una época en la que la principal causa de muerte es el estilo de vida. En la práctica estamos eligiendo nuestra propia forma de morir.",
+    s1:{v:"2011", l:"año en que el estilo de vida supera a las infecciones"}, s2:{v:"60%", l:"de muertes: resultado de larga decadencia"}
   },
   {
-    category: "Religión",
-    icon: "✝️",
-    headline: "El Islam unificó un territorio mayor que Roma en solo 100 años",
-    chapter: "Capítulo 12 · La ley de la religión",
-    development: "Roma tardó 700 años en construir su imperio. El islam, desde la muerte de Mahoma en 632, tardó apenas un siglo en controlar desde España hasta Persia. Lo que el islam ofrecía no era solo una religión sino un sistema completo: derecho, economía, política, ciencia. Para muchos pueblos conquistados, adoptar el islam era una modernización, no una rendición.",
-    quote: "Alrededor de la sagrada Kaaba, en La Meca, la unificación humana se producía por otros medios.",
-    stat1: { value: "100", label: "años para construir el primer califato" },
-    stat2: { value: "700", label: "años que tardó Roma en hacer lo mismo" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🧬", cat:"Reproducción",
+    headline:"Los espermatozoides son los peores nadadores del cuerpo humano",
+    chapter:"Cap. 18 · En el principio: la concepción y el nacimiento",
+    dev:"Sin ayuda, un espermatozoide tardaría diez minutos en recorrer nadando el espacio que ocupa una palabra en una página. Parecen no tener ningún sentido de la orientación. La eyaculación masculina, que al hombre le parece una explosión de placer, es biológicamente hablando algo similar al lanzamiento de un cohete.",
+    quote:"Resulta un tanto difícil saber qué pensar de los espermatozoides. Son como los astronautas de la biología humana, pero son unos torpes idiotas que parecen no tener el menor sentido de la orientación.",
+    s1:{v:"10 min", l:"para nadar el ancho de una palabra"}, s2:{v:"🚀", l:"la eyaculación: como lanzar un cohete biológico"}
   },
   {
-    category: "Dinero",
-    icon: "💰",
-    headline: "Las primeras monedas se acuñaron en Lidia (actual Turquía) hace 2.600 años",
-    chapter: "Capítulo 10 · El olor del dinero",
-    development: "Antes de las monedas, el comercio dependía del trueque o de bienes específicos como granos, ganado o conchas. El rey Aliates de Lidia creó las primeras monedas estandarizadas alrededor del año 600 a.C. En solo 200 años, el concepto se extendió desde India hasta España. El dinero es quizás el único invento humano adoptado universalmente, por encima de cualquier frontera cultural o religiosa.",
-    quote: "El olor del dinero no cambia según la cultura. Los hindúes, los españoles y los chinos podían encontrar valor en el mismo metal.",
-    stat1: { value: "600 a.C.", label: "primera moneda acuñada en Lidia" },
-    stat2: { value: "200", label: "años para extenderse por el mundo conocido" }
+    book:"El cuerpo humano", bookShort:"Cuerpo", author:"Bryson", icon:"🫁", cat:"Anatomía",
+    headline:"El tracto gastrointestinal mide 12 metros: si lo extiendes, cubres 0,2 hectáreas",
+    chapter:"Cap. 15 · Las tripas",
+    dev:"Por dentro somos enormes. Las mujeres tardan de media 72 horas en digerir los alimentos; los hombres, 55 horas. Es decir, la comida permanece en el interior de las mujeres casi un día más. No sabemos bien qué consecuencias tiene eso. El cuerpo es mucho más extraño de lo que parece desde fuera.",
+    quote:"El tracto gastrointestinal de un hombre adulto de tamaño medio mide unos 12 metros. Si extendiéramos todos esos tubos, cubriríamos una superficie de alrededor de 0,20 hectáreas.",
+    s1:{v:"12 m", l:"longitud del tracto gastrointestinal"}, s2:{v:"72h", l:"tiempo de digestión en mujeres"}
+  },
+
+  /* ====== EN CASA ====== */
+  {
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🏠", cat:"Historia doméstica",
+    headline:"El Palacio de Cristal de Londres se construyó en solo 5 meses en 1850",
+    chapter:"Intro · El año",
+    dev:"En otoño de 1850 se levantó en Hyde Park un invernadero de hierro y cristal que ocupaba siete hectáreas. Era el edificio más grande del planeta. Menos de un año antes no existía ni como concepto. El nombre 'Palacio de Cristal' fue inventado por el columnista Douglas Jerrold del semanario Punch.",
+    quote:"La exposición para la que fue diseñado era el sueño de Henry Cole, cuya otra llamada de atención a la historia es la invención de la felicitación navideña.",
+    s1:{v:"5 meses", l:"para construir el edificio más grande del planeta"}, s2:{v:"7 ha", l:"superficie del Palacio de Cristal"}
   },
   {
-    category: "Órdenes imaginados",
-    icon: "⚖️",
-    headline: "Las naciones no existen: son relatos compartidos que se vuelven reales",
-    chapter: "Capítulo 9 · La flecha de la historia",
-    development: "'España', 'Francia' o 'Estados Unidos' no son montañas ni ríos. Son historias que contamos colectivamente. Nadie puede tocar 'el Estado español'. Pero si suficientes personas actúan como si existiera, existe. Lo fascinante es que estos órdenes imaginados, una vez establecidos, moldean la realidad física: construyen muros, trazan fronteras, envían ejércitos y redistribuyen riqueza.",
-    quote: "Los mitos y las ficciones acostumbraron a la gente, casi desde el momento del nacimiento, a pensar de determinada manera, a comportarse de acuerdo con determinados estándares.",
-    stat1: { value: "195", label: "naciones reconocidas hoy en el mundo" },
-    stat2: { value: "📖", label: "todas son relatos, no objetos físicos" }
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🏠", cat:"Revolución Industrial",
+    headline:"El 1,6% de la población británica producía en 1851 la mitad del carbón del mundo",
+    chapter:"El escenario",
+    dev:"En 1851, Gran Bretaña tenía solo el 1,6% de la población mundial, pero producía la mitad del carbón y el hierro del planeta, controlaba dos tercios del comercio marítimo y sus bancos tenían más dinero que todos los demás centros financieros juntos. Karl Marx, viviendo en Londres, se maravilló de que hubiera 500 tipos diferentes de martillo.",
+    quote:"Karl Marx, mientras vivía en Londres, destacó maravillado que en Gran Bretaña era posible comprar quinientos tipos diferentes de martillo.",
+    s1:{v:"1,6%", l:"de la población mundial"}, s2:{v:"50%", l:"del carbón y hierro mundiales"}
   },
   {
-    category: "Felicidad",
-    icon: "😊",
-    headline: "Los agricultores trabajaban más horas y comían peor que los cazadores-recolectores",
-    chapter: "Capítulo 5 · El mayor fraude de la historia",
-    development: "El análisis de esqueletos prehistóricos revela que los cazadores-recolectores eran más altos, tenían huesos más fuertes y menos enfermedades que los primeros agricultores. La agricultura trajo malnutrición por dieta monótona, enfermedades infecciosas por vivir con animales y hacinados, y lesiones por trabajo repetitivo en el campo. El precio del 'progreso' fue pagado por las generaciones que lo vivieron.",
-    quote: "Durante 2,5 millones de años, los humanos se alimentaron recolectando plantas y cazando animales que vivían y se reproducían sin su intervención.",
-    stat1: { value: "−10 cm", label: "altura media perdida al adoptar la agricultura" },
-    stat2: { value: "3×", label: "más horas trabajando como agricultor" }
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🌽", cat:"Agricultura",
+    headline:"Nadie sabe cómo los mesoamericanos crearon el maíz moderno de la nada",
+    chapter:"El escenario · Las ciudades",
+    dev:"El maíz salvaje no se parece en nada al maíz moderno. Si observamos la cebada, el arroz o el trigo salvaje, vemos enseguida las afinidades con sus formas modernas. Pero el pariente más cercano del maíz es una hierba llamada teosinte con la que no comparte ningún parecido visible. Los mesoamericanos crearon algo completamente nuevo que hoy alimenta al mundo.",
+    quote:"Los mesoamericanos fueron los mayores cultivadores de la historia, pero de todas sus innovaciones hortícolas, ninguna ha sido más importante o inesperada como la creación del maíz. Seguimos sin tener ni idea de cómo lo hicieron.",
+    s1:{v:"?", l:"cómo se creó el maíz: nadie lo sabe"}, s2:{v:"10.000 a.C.", l:"domesticación del maíz en Mesoamérica"}
   },
   {
-    category: "Revolución Cognitiva",
-    icon: "🧠",
-    headline: "El chisme fue probablemente la primera 'red social' de los sapiens",
-    chapter: "Capítulo 2 · El árbol del saber",
-    development: "El antropólogo Robin Dunbar propuso que el lenguaje humano evolucionó principalmente para hablar de otras personas: quién duerme con quién, quién es de fiar, quién engaña. El 'chisme social' permitió a los sapiens mantener grupos sociales de hasta 150 personas (el número de Dunbar), mucho más que cualquier otro primate. La Red Social más antigua del mundo fue el cotilleo tribal.",
-    quote: "La teoría del 'chisme social' (social gossip) sugiere que el Homo sapiens es sobre todo un animal social.",
-    stat1: { value: "150", label: "el 'número de Dunbar': máximo del grupo cognitivo" },
-    stat2: { value: "💬", label: "el chisme: primera red social humana" }
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🏠", cat:"Historia doméstica",
+    headline:"El recibidor fue durante siglos la habitación más importante de la casa",
+    chapter:"El hall",
+    dev:"El hall actual, donde colgamos el abrigo y nos limpiamos los zapatos, fue en su día la habitación central y única de la casa. Durante siglos, toda la vida doméstica (comer, dormir, celebraciones) ocurría en ese espacio. El concepto de habitaciones privadas separadas fue una revolución cultural que no llegó hasta la Edad Media tardía.",
+    quote:"Ninguna estancia se remonta más atrás en la historia que el recibidor o hall. Espacio actualmente destinado a limpiarse los zapatos y colgar el sombrero, fue en su día la habitación más importante de la casa.",
+    s1:{v:"1000 d.C.", l:"primeras habitaciones privadas separadas"}, s2:{v:"📜", l:"'hall': la única habitación durante siglos"}
   },
   {
-    category: "Imperios",
-    icon: "🏛️",
-    headline: "Todos los imperios proclaman que gobiernan para el bien de los conquistados",
-    chapter: "Capítulo 11 · Visiones imperiales",
-    development: "Roma no se veía como una potencia explotadora: traía la civilización, el derecho y la paz (Pax Romana). Los británicos 'educaban' a sus colonias. Los estadounidenses 'exportan democracia'. Todos los imperios de la historia han tenido su ideología justificadora. Lo fascinante es que muchos conquistados acababan adoptándola como propia: los galos romanizados defendían el Imperio tanto como los romanos.",
-    quote: "Un imperio que no puede aguantar un golpe y seguir de pie no es realmente un imperio.",
-    stat1: { value: "100%", label: "de los imperios creen actuar por el bien ajeno" },
-    stat2: { value: "0%", label: "de los imperios admitieron ser imperialistas" }
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🍽️", cat:"Historia doméstica",
+    headline:"En 1851, las cocinas victorianas no tenían fregadero",
+    chapter:"La cocina",
+    dev:"En la cocina victoriana de mediados del siglo XIX no había fregadero. Cocinar y fregar eran actividades de habitaciones distintas. Los platos había que transportarlos hasta el lavadero y traerlos de vuelta. Un menú típico victoriano para 6 personas incluía 9 platos distintos: desde sopa de zanahoria hasta pudin.",
+    quote:"Si pudiéramos entrar en la cocina de la rectoría en 1851, nos chocarían de inmediato varias diferencias. Para empezar, no habría fregadero.",
+    s1:{v:"9 platos", l:"menú victoriano para 6 personas"}, s2:{v:"🚫🚿", l:"las cocinas de 1851 no tenían fregadero"}
   },
   {
-    category: "Capitalismo",
-    icon: "📈",
-    headline: "Europa invadió el mundo a crédito: primero pedía prestado, luego conquistaba",
-    chapter: "Capítulo 15 · El matrimonio de ciencia e imperio",
-    development: "Los imperios coloniales europeos se financiaron principalmente con crédito. Los inversores ponían dinero esperando retorno de las colonias. Si la colonia era rentable, se pagaba la deuda y se volvía a invertir. Si no, se conquistaba otra. El capitalismo y el imperialismo formaron un bucle de retroalimentación que financió la dominación mundial europea durante 400 años.",
-    quote: "La confianza en el futuro fue no solo la condición previa para el crédito moderno, sino también para la expansión colonial europea.",
-    stat1: { value: "400", label: "años de bucle capitalismo-imperialismo" },
-    stat2: { value: "💳", label: "primera conquista colonial: financiada a crédito" }
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"💡", cat:"Historia doméstica",
+    headline:"En 1939, encender cualquier luz por la noche en Gran Bretaña era ilegal",
+    chapter:"La caja de los fusibles",
+    dev:"Durante la Segunda Guerra Mundial, Gran Bretaña introdujo regulaciones de oscuridad total para desbaratar a la Luftwaffe. Durante tres meses fue ilegal encender cualquier luz. Un hombre fue multado por no tapar el resplandor de su pecera. Los coches circulaban prácticamente invisibles, sin siquiera las luces del salpicadero. Las muertes en accidentes de tráfico se dispararon.",
+    quote:"Los que quebrantaban la ley podían ser arrestados por encender un cigarrillo en un portal o alumbrar una cerilla para leer el nombre de una calle.",
+    s1:{v:"1939", l:"oscuridad total en Gran Bretaña"}, s2:{v:"🐟", l:"multado por la pecera iluminada"}
   },
   {
-    category: "Revolución Industrial",
-    icon: "⚙️",
-    headline: "El consumismo moderno requiere que compremos cosas que no necesitamos",
-    chapter: "Capítulo 17 · Las ruedas de la industria",
-    development: "Las economías industriales producen más de lo que la gente necesita para sobrevivir. Para que el sistema funcione, la gente debe querer más de lo que necesita. Por eso existe la publicidad, la moda y la obsolescencia programada. El consumismo no es una elección individual: es la infraestructura ideológica que mantiene funcionando el motor económico moderno. Harari lo llama el 'mandamiento capitalista': debes gastar.",
-    quote: "Cada vez que una escasez de una u otras ha amenazado con hacer más lento el crecimiento económico, han fluido las inversiones hacia la investigación científica y tecnológica.",
-    stat1: { value: "1950", label: "año en que el consumismo se volvió masivo" },
-    stat2: { value: "🛍️", label: "'comprar' como acto cívico moderno" }
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🎄", cat:"Historia doméstica",
+    headline:"La felicitación navideña fue inventada en 1843 para promover el correo a un penique",
+    chapter:"El año",
+    dev:"Henry Cole, el funcionario que concibió el Palacio de Cristal, inventó también la felicitación navideña como estrategia de marketing para animar a la gente a usar el nuevo sistema de correo a un penique que acababa de crearse. Un hombre inventó casualmente dos de las tradiciones más ubicuas de la Navidad moderna.",
+    quote:"Henry Cole convenció a muchos dignatarios de la idea de una Gran Exposición. Su otra llamada de atención a la historia es la invención de la felicitación navideña, como manera de animar a la gente a utilizar el nuevo correo a un penique.",
+    s1:{v:"1843", l:"primera felicitación navideña"}, s2:{v:"1 penique", l:"coste del sello que motivó su creación"}
   },
   {
-    category: "Futuro de los sapiens",
-    icon: "🧬",
-    headline: "Pronto podría existir una clase de superhumanos y una clase de inútiles",
-    chapter: "Capítulo 20 · El final de Homo sapiens",
-    development: "Si la biotecnología y la IA solo están al alcance de los ricos, podría surgir una nueva jerarquía basada no en el dinero o la nobleza, sino en la biología. Una élite de superhumanos mejorados genéticamente y una masa de Homo sapiens sin mejorar que ya no sean económicamente útiles. Harari llama a esto la mayor amenaza del siglo XXI: no los robots que nos quitan el trabajo, sino la biología que crea ciudadanos de segunda clase.",
-    quote: "La mayor amenaza para la igualdad en el siglo XXI podría ser la existencia de una élite biológicamente superior.",
-    stat1: { value: "2050", label: "posible inicio de la brecha biológica" },
-    stat2: { value: "🧬", label: "primer gen editado en embriones: 2018" }
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🏘️", cat:"Arquitectura",
+    headline:"Las casas no tienen nada casual: puertas, ventanas y chimeneas tardaron siglos en perfeccionarse",
+    chapter:"El hall",
+    dev:"Todo en una casa tuvo que ser pensado. Nada es obvio. Las ventanas de cristal, las chimeneas que no llenan la habitación de humo, las escaleras a una segunda planta, los retretes interiores: cada elemento requirió siglos de experimentación dolorosa. La casa moderna es el resultado de una acumulación de ingenio que damos por sentado.",
+    quote:"Todo en esta casa, o en cualquier casa, tuvo que ser pensado: puertas, ventanas, chimeneas, escaleras. Y gran parte de ello llevó mucho más tiempo y experimentación de lo que cabría pensar.",
+    s1:{v:"10.000 años", l:"de evolución de la vivienda humana"}, s2:{v:"🏠", l:"nada en tu casa es accidental"}
   },
+  {
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🧊", cat:"Historia doméstica",
+    headline:"En 1844, un bloque de hielo en un escaparate londinense era la mayor atracción de la ciudad",
+    chapter:"La cocina",
+    dev:"La Wenham Lake Ice Company inauguró en el Strand de Londres un escaparate donde exponía diariamente un bloque de hielo traído de Massachusetts. Nadie en Inglaterra había visto algo así en verano. Se podía leer el periódico a través del hielo. Era tan transparente y cristalino que la reina Victoria pidió que se usara en Buckingham Palace.",
+    quote:"El escaparate se convirtió en una verdadera sensación y siempre estaba abarrotado de mirones. Podía leerse un periódico a través de aquel hielo portentosamente transparente.",
+    s1:{v:"1844", l:"primer bloque de hielo en un escaparate londinense"}, s2:{v:"🧊", l:"la reina Victoria lo exigió en Buckingham Palace"}
+  },
+  {
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🏛️", cat:"Arqueología",
+    headline:"La primera ciudad conocida del mundo tenía entradas por el tejado, no por la calle",
+    chapter:"El hall · Las ciudades",
+    dev:"Çatalhöyük, en Anatolia (actual Turquía), fue descubierta en 1958 y es uno de los primeros asentamientos urbanos conocidos, con 9.000 años de antigüedad. Sus casas estaban tan juntas que no había calles: se entraba por agujeros en el tejado y se bajaba por escaleras de mano. Los muertos se enterraban debajo del suelo de las casas.",
+    quote:"El montículo escondía los restos de una antigua ciudad. Suponía que aquello era imposible: las ciudades antiguas eran un fenómeno de Mesopotamia y el Levante. No tenían que existir en Anatolia.",
+    s1:{v:"9000 a.C.", l:"antigüedad de Çatalhöyük"}, s2:{v:"🪜", l:"entrada a las casas: por el tejado"}
+  },
+  {
+    book:"En casa", bookShort:"En casa", author:"Bryson", icon:"🍎", cat:"Alimentación",
+    headline:"Los adulteradores victorianos añadían yeso, arena y polvo al azúcar y la mantequilla",
+    chapter:"La cocina",
+    dev:"En el siglo XIX, la adulteración de alimentos era tan común que casi nada escapaba a ella. El azúcar se alargaba con yeso, escayola y arena. La mantequilla se engrosaba con sebo. El pan contenía alumbre. La leche se aguaba y luego se le añadía tiza para devolverle el color blanco. Los consumidores no tenían forma de saberlo.",
+    quote:"Casi nada, por lo que parece, escapaba de las tortuosas artimañas de los adulteradores de alimentos. El azúcar y otros ingredientes caros solían alargarse con yeso, escayola, arena, polvo y otras formas de 'hinchado'.",
+    s1:{v:"1851", l:"año de escandaloso fraude alimentario victoriano"}, s2:{v:"🧴", l:"yeso y arena en el azúcar vendido al público"}
+  }
 ];
 
-let currentIndex = 0;
+/* ─── MIX DATA ─── */
+const MIXES = [
+  {
+    books: "Sapiens · Cuerpo humano",
+    connection: "Lo que el cerebro comparte con la historia: ambos construyen realidades que no existen",
+    detail: "Harari explica que los sapiens dominaron el mundo porque su cerebro puede creer en ficciones colectivas como naciones o dinero. Bryson añade que ese mismo cerebro vive en oscuridad absoluta y nunca percibe el mundo directamente, solo interpreta impulsos eléctricos. Toda la historia de la humanidad es la obra de un órgano que construye ilusiones."
+  },
+  {
+    books: "Sapiens · En casa",
+    connection: "La revolución agrícola cambió el interior de las casas tanto como el mundo exterior",
+    detail: "Sapiens describe cómo la agricultura forzó a los humanos a establecerse en un lugar fijo. En casa explora cómo ese sedentarismo transformó la vivienda: de cueva compartida a hall comunal, a habitaciones privadas, a la obsesión victoriana con el espacio personal. La revolución agrícola se lee en la arquitectura."
+  },
+  {
+    books: "Cuerpo humano · Sapiens",
+    connection: "Somos 59 elementos químicos que creyeron en el dinero y conquistaron el mundo",
+    detail: "Bryson nos recuerda que somos básicamente química barata: 59 elementos que pueden comprarse. Harari añade la paradoja: esa misma química, organizada en un cerebro, fue capaz de crear el sistema financiero global, imperios y religiones que afectaron a billones de seres vivos. Del Big Bang a Wall Street, es cuestión de organización."
+  },
+  {
+    books: "En casa · Cuerpo humano",
+    connection: "El microbioma doméstico y el personal: llevamos la casa dentro y fuera",
+    detail: "Bryson en El cuerpo humano describe que somos el hogar de billones de bacterias beneficiosas. En casa revela que durante siglos vivíamos hacinados sin refrigeración, con adulteración de alimentos y sin saneamiento. La guerra entre el microbioma humano y el entorno doméstico contaminado es la historia no contada de la civilización."
+  },
+  {
+    books: "Sapiens · Cuerpo humano",
+    connection: "La felicidad: ni la historia ni la biología han mejorado nuestra serotonina",
+    detail: "Harari pregunta si somos más felices que los cazadores-recolectores tras toda la historia humana. Bryson responde desde la biología: la felicidad depende de niveles químicos en el cerebro que llevan sin cambiar 70.000 años. Todo el progreso de la humanidad ha sido exterior; el interior bioquímico sigue siendo paleolítico."
+  },
+  {
+    books: "Sapiens · En casa",
+    connection: "La escritura nació para la burocracia; las casas crecieron para la privacidad",
+    detail: "Harari muestra que la escritura surgió de la necesidad de registrar impuestos e inventarios, no de expresión artística. Bryson en En casa describe cómo las habitaciones privadas nacieron del deseo de los señores medievales de escapar del hall comunal. Ambos inventos, la escritura y la privacidad doméstica, son tecnologías del yo individual frente a la masa."
+  },
+  {
+    books: "En casa · Sapiens",
+    connection: "El Palacio de Cristal y el capitalismo: fe en el futuro hecha de hierro y cristal",
+    detail: "Bryson relata que el Palacio de Cristal se financió con la confianza de que una exposición enorme generaría beneficios futuros. Harari define el capitalismo exactamente así: fe colectiva en el crecimiento futuro que hace posible el crédito. El edificio más grande del mundo de 1851 fue literalmente el capitalismo hecho arquitectura."
+  },
+  {
+    books: "Cuerpo humano · En casa",
+    connection: "El sueño y la oscuridad: la guerra de Gran Bretaña contra la luz afectó al cuerpo",
+    detail: "Bryson en El cuerpo humano explica que el sueño es vital aunque no sabemos exactamente por qué. En casa describe cómo durante los tres meses de oscuridad total de 1939, los británicos tuvieron prohibido encender cualquier luz. Los accidentes nocturnos se dispararon. La guerra contra la luz fue también una guerra involuntaria contra los ritmos circadianos de millones de personas."
+  },
+  {
+    books: "Sapiens · Cuerpo humano",
+    connection: "La revolución agrícola empeoró la dieta; el cuerpo tardó milenios en adaptarse",
+    detail: "Harari documenta que los primeros agricultores eran más bajos, más enfermizos y con peor nutrición que los cazadores-recolectores. Bryson en El cuerpo humano confirma desde la perspectiva biológica que el sistema digestivo humano evolucionó para una dieta variada de cientos de especies. Aún hoy, nuestras bacterias intestinales procesan mejor la diversidad que la monocultura."
+  },
+  {
+    books: "En casa · Sapiens",
+    connection: "Las ciudades con entrada por el tejado y las ciudades que viven en la imaginación",
+    detail: "Bryson describe Çatalhöyük, la ciudad de 9.000 años donde se entraba por el tejado. Harari explica que todas las ciudades son en realidad órdenes imaginados: 'Madrid' o 'Nueva York' no son objetos físicos sino relatos colectivos. La ciudad más antigua del mundo ya era una ficción compartida que funcionaba porque todos sus habitantes actuaban como si existiera."
+  },
+  {
+    books: "Cuerpo humano · En casa",
+    connection: "El corazón victoriano: 3.500 millones de latidos para vivir en una casa sin fregadero",
+    detail: "Bryson nos dice que el corazón late 3.500 millones de veces en una vida. En casa revela que en 1851 ese corazón vivía en hogares sin fregadero, sin refrigeración, con comida adulterada con arena y yeso, y con agua contaminada. El cuerpo humano es extraordinariamente robusto: sobrevivió siglos de condiciones domésticas que hoy consideraríamos medievales."
+  },
+  {
+    books: "Sapiens · En casa",
+    connection: "La Revolución Industrial transformó el tiempo: de las estaciones al reloj de fichar",
+    detail: "Harari describe cómo la Revolución Industrial convirtió el tiempo en un recurso escaso y controlado. Bryson en En casa narra cómo esa transformación se materializó en los hogares: aparecieron los relojes en cada habitación, los horarios de comida fijos, la jornada laboral medida al minuto. La casa victoriana era una máquina de gestión del tiempo."
+  },
+  {
+    books: "Cuerpo humano · En casa",
+    connection: "Respiramos moléculas de Dickens, Darwin y todos los que han vivido en esas casas",
+    detail: "Bryson en El cuerpo humano revela que en cada respiración inhalamos moléculas del aliento de todas las personas que han vivido. En casa nos lleva por la rectoría de Norfolk de 1851, habitada por generaciones de victoriana. Matemáticamente, respiramos partículas de todos los que alguna vez vivieron en cualquier edificio que visitemos."
+  },
+  {
+    books: "Sapiens · Cuerpo humano",
+    headline: "Homo sapiens diseñó antibióticos casi por accidente",
+    connection: "El diseño inteligente llega a la biología: antibióticos descubiertos por casualidad",
+    detail: "Harari describe cómo los sapiens están reemplazando la evolución natural con diseño inteligente. Bryson en El cuerpo humano relata que Albert Schatz, un estudiante pobre de biología del suelo, descubrió en 1943 la estreptomicina casi por accidente. El 'diseño inteligente' que Harari predice para el futuro tiene sus raíces en un estudiante que ni siquiera buscaba un antibiótico."
+  },
+  {
+    books: "En casa · Cuerpo humano",
+    connection: "La felicitación navideña y el sistema inmunitario: dos inventos que funcionan porque todos creen en ellos",
+    detail: "Henry Cole inventó la felicitación navideña en 1843 como truco de marketing y se convirtió en tradición global porque todos decidieron colectivamente que tenía valor. Bryson en El cuerpo humano describe el sistema inmunitario como una red de comunicación y señales químicas que funciona porque todas las células 'creen' en el mismo protocolo. La biología y la cultura comparten el mismo principio: la coordinación colectiva crea realidades."
+  }
+];
+
+/* ─── STATE ─── */
+let orderPos = 0;
+let mixPos = 0;
+let showMix = false;
 let visited = new Set();
-let favorites = JSON.parse(localStorage.getItem('sapiens_favs') || '[]');
-let history = [];
+let favorites = JSON.parse(localStorage.getItem('bib_favs') || '[]');
+let theme = localStorage.getItem('bib_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+const order = shuffle([...Array(FACTS.length).keys()]);
+const mixOrder = shuffle([...Array(MIXES.length).keys()]);
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -913,141 +979,169 @@ function shuffle(arr) {
   return arr;
 }
 
-const order = shuffle([...Array(FACTS.length).keys()]);
-let orderPos = 0;
+/* ─── RENDER ─── */
+function currentFact() { return FACTS[order[orderPos % order.length]]; }
+function currentMix()  { return MIXES[mixOrder[mixPos % mixOrder.length]]; }
 
-function getCurrentFact() {
-  return FACTS[order[orderPos % order.length]];
-}
-
-function renderFact(fact, animate = false) {
-  const mainCard = document.getElementById('main-card');
-  const quoteCard = document.getElementById('quote-card');
-  const statsRow = document.getElementById('stats-row');
+function renderAll(animate) {
+  const f = currentFact();
+  const els = [
+    document.getElementById('main-card'),
+    document.getElementById('quote-card'),
+    document.getElementById('stats-row')
+  ];
 
   if (animate) {
-    mainCard.classList.add('animating');
-    quoteCard.classList.add('animating');
-    statsRow.classList.add('animating');
+    els.forEach(e => e.classList.add('fade-out'));
+    setTimeout(() => { applyFact(f); els.forEach(e => e.classList.remove('fade-out')); }, 280);
+  } else {
+    applyFact(f);
   }
 
-  setTimeout(() => {
-    document.getElementById('category-icon').textContent = fact.icon;
-    document.getElementById('category-text').textContent = fact.category;
-    document.getElementById('fact-headline').textContent = fact.headline;
-    document.getElementById('chapter-source').textContent = fact.chapter;
-    document.getElementById('fact-development').textContent = fact.development;
-    document.getElementById('quote-text').textContent = fact.quote;
-    document.getElementById('quote-source').textContent = `— Sapiens, cap. ${fact.chapter.split('·')[0].trim()}`;
-    document.getElementById('stat1-value').textContent = fact.stat1.value;
-    document.getElementById('stat1-label').textContent = fact.stat1.label;
-    document.getElementById('stat2-value').textContent = fact.stat2.value;
-    document.getElementById('stat2-label').textContent = fact.stat2.label;
-
-    const idx = order[orderPos % order.length];
-    visited.add(idx);
-    updateCounter();
-    updateFavButton();
-    renderDots();
-
-    if (animate) {
-      mainCard.classList.remove('animating');
-      quoteCard.classList.remove('animating');
-      statsRow.classList.remove('animating');
-    }
-  }, animate ? 300 : 0);
+  if (showMix) renderMix(animate);
 }
 
+function applyFact(f) {
+  document.getElementById('cat-icon').textContent = f.icon;
+  document.getElementById('cat-text').textContent = f.cat;
+  document.getElementById('source-tag').textContent = f.bookShort;
+  document.getElementById('fact-headline').textContent = f.headline;
+  document.getElementById('chapter-label').textContent = f.chapter;
+  document.getElementById('fact-development').textContent = f.dev;
+  document.getElementById('quote-text').textContent = f.quote;
+  document.getElementById('quote-source').textContent = `— ${f.book}, ${f.author}`;
+  document.getElementById('stat1v').textContent = f.s1.v;
+  document.getElementById('stat1l').textContent = f.s1.l;
+  document.getElementById('stat2v').textContent = f.s2.v;
+  document.getElementById('stat2l').textContent = f.s2.l;
+
+  visited.add(order[orderPos % order.length]);
+  document.getElementById('counter').textContent = `${visited.size} / ${FACTS.length}`;
+  updateFavBtn();
+  renderDots();
+  document.getElementById('main-content').scrollTop = 0;
+}
+
+function renderMix(animate) {
+  const m = currentMix();
+  const card = document.getElementById('mix-card');
+  if (animate) {
+    card.style.opacity = '0'; card.style.transform = 'translateY(10px)';
+    setTimeout(() => {
+      applyMix(m);
+      card.style.transition = 'opacity 0.28s ease, transform 0.28s ease';
+      card.style.opacity = ''; card.style.transform = '';
+    }, 280);
+  } else {
+    applyMix(m);
+  }
+}
+
+function applyMix(m) {
+  document.getElementById('mix-books').textContent = m.books;
+  document.getElementById('mix-connection').textContent = m.connection;
+  document.getElementById('mix-detail').textContent = m.detail;
+}
+
+function renderDots() {
+  const c = document.getElementById('progress-dots');
+  const MAX = 15;
+  c.innerHTML = '';
+  for (let i = 0; i < Math.min(FACTS.length, MAX); i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === orderPos % order.length ? ' current' : visited.has(order[i]) ? ' visited' : '');
+    c.appendChild(d);
+  }
+}
+
+/* ─── ACTIONS ─── */
 function nextFact() {
   const btn = document.getElementById('btn-new');
   btn.classList.add('spinning');
   setTimeout(() => btn.classList.remove('spinning'), 500);
 
-  history.push(orderPos);
-  orderPos = (orderPos + 1) % order.length;
-  renderFact(getCurrentFact(), true);
+  orderPos++;
+  if (showMix) mixPos++;
+  renderAll(true);
 }
 
-function updateCounter() {
-  document.getElementById('counter').textContent = `${visited.size} / ${FACTS.length}`;
+function toggleMix() {
+  showMix = !showMix;
+  const card = document.getElementById('mix-card');
+  const btn = document.getElementById('btn-mix');
+
+  if (showMix) {
+    card.classList.add('visible');
+    btn.classList.add('on');
+    btn.textContent = '✕ Cerrar';
+    renderMix(false);
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  } else {
+    card.classList.remove('visible');
+    btn.classList.remove('on');
+    btn.textContent = '🔀 Mezclar';
+  }
 }
 
-function updateFavButton() {
+function updateFavBtn() {
   const idx = order[orderPos % order.length];
   const btn = document.getElementById('btn-fav');
-  if (favorites.includes(idx)) {
-    btn.classList.add('active');
-    btn.querySelector('svg').setAttribute('fill', 'currentColor');
-  } else {
-    btn.classList.remove('active');
-    btn.querySelector('svg').setAttribute('fill', 'none');
-  }
+  const isFav = favorites.includes(idx);
+  btn.classList.toggle('active', isFav);
+  btn.querySelector('svg').setAttribute('fill', isFav ? 'currentColor' : 'none');
 }
 
 function toggleFav() {
   const idx = order[orderPos % order.length];
   const pos = favorites.indexOf(idx);
-  if (pos === -1) {
-    favorites.push(idx);
-    showToast('Guardado en favoritos ❤️');
-  } else {
-    favorites.splice(pos, 1);
-    showToast('Eliminado de favoritos');
-  }
-  localStorage.setItem('sapiens_favs', JSON.stringify(favorites));
-  updateFavButton();
-}
-
-function renderDots() {
-  const container = document.getElementById('progress-dots');
-  const MAX_DOTS = 12;
-  const total = Math.min(FACTS.length, MAX_DOTS);
-  container.innerHTML = '';
-  for (let i = 0; i < total; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'dot';
-    const factIdx = order[i % order.length];
-    if (i === orderPos % order.length) dot.classList.add('current');
-    else if (visited.has(factIdx)) dot.classList.add('visited');
-    container.appendChild(dot);
-  }
+  if (pos === -1) { favorites.push(idx); showToast('Guardado ❤️'); }
+  else { favorites.splice(pos, 1); showToast('Eliminado'); }
+  localStorage.setItem('bib_favs', JSON.stringify(favorites));
+  updateFavBtn();
 }
 
 function shareFact() {
-  const fact = getCurrentFact();
-  const text = `📖 Sapiens · Dato curioso\n\n"${fact.headline}"\n\n${fact.development}\n\n— Yuval Noah Harari`;
-
-  if (navigator.share) {
-    navigator.share({ title: 'Sapiens · Dato curioso', text }).catch(() => {});
-  } else {
-    navigator.clipboard.writeText(text).then(() => showToast('Copiado al portapapeles ✓')).catch(() => showToast('No se pudo copiar'));
-  }
+  const f = currentFact();
+  const text = `📚 ${f.book} · ${f.author}\n\n"${f.headline}"\n\n${f.dev}`;
+  if (navigator.share) navigator.share({ title: f.headline, text }).catch(() => {});
+  else navigator.clipboard.writeText(text).then(() => showToast('Copiado ✓')).catch(() => showToast('No se pudo copiar'));
 }
 
 function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2200);
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// Swipe gesture
-let touchStartX = 0, touchStartY = 0;
+/* ─── THEME ─── */
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('btn-theme').textContent = t === 'dark' ? '🌙' : '☀️';
+  document.getElementById('theme-meta').setAttribute('content', t === 'dark' ? '#111111' : '#f5f0e8');
+}
+
+function toggleTheme() {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('bib_theme', theme);
+  applyTheme(theme);
+}
+
+/* ─── SWIPE ─── */
+let tx = 0, ty = 0;
 document.getElementById('main-content').addEventListener('touchstart', e => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY;
 }, { passive: true });
 
 document.getElementById('main-content').addEventListener('touchend', e => {
-  const dx = touchStartX - e.changedTouches[0].clientX;
-  const dy = touchStartY - e.changedTouches[0].clientY;
-  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-    nextFact();
-  }
+  const dx = tx - e.changedTouches[0].clientX;
+  const dy = ty - e.changedTouches[0].clientY;
+  if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy)) nextFact();
 }, { passive: true });
 
-// Init
-renderFact(getCurrentFact(), false);
+/* ─── INIT ─── */
+applyTheme(theme);
+renderAll(false);
 </script>
 </body>
 </html>
